@@ -51,7 +51,7 @@ class Dieta:
         return (f"Nombre de la mascota: {self.mascota.nombre}\n"
                 f"Peso Actual: {self.mascota.peso} kg\n"
                 f"Edad: {self.mascota.edad} años\n"
-                f"Tamaño: {self.mascota.tamañoStr()}\n"
+                f"Tamaño: {self.mascota.getTamanoStr}\n"
                 f"Peso ideal: {round(self.pesoIdeal, 2)} kg\n"
                 f"Cantidad de Gramos de alimento diarios: {round(self.gramosDiarios, 2)} g\n"
                 f"{estadoPeso}\n\n"

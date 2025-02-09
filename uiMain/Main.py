@@ -1,5 +1,6 @@
 from gestorAplicacion.elementos import Dieta
 from gestorAplicacion.gestion import Empleado
+from gestorAplicacion.elementos import Mascota, EstadoSalud
 from gestorAplicacion.gestion import Tienda
 
 def planificacionDieta():
@@ -44,7 +45,7 @@ def planificacionDieta():
     peso = int(input("Peso en kg: "))
 
     # Crear objeto Mascota
-    mascota = Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
+    mascota = Mascota(nombre, especie, edad, sexo, EstadoSalud.SANO, tamano, peso)
 
     # Crear y calcular dieta
     dieta = Dieta(mascota)
