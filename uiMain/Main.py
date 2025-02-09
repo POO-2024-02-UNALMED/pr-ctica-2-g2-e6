@@ -54,7 +54,7 @@ def planificacionDieta():
 
     # Imprimir la dieta planificada
     print("\n--------------------\n")
-    print(dieta.toString())
+    print(dieta)
     print("\n--------------------")
 
     # Mini tienda de productos dietéticos
