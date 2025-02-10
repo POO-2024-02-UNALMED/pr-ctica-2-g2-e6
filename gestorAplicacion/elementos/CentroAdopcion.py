@@ -1,6 +1,6 @@
 from enum import Enum
 from gestorAplicacion.elementos import Mascota
-from gestorAplicacion.elementos import EstadoSalud
+from gestorAplicacion.elementos.Mascota import EstadoSalud
 
 class Sedes(Enum):
     MEDELLIN = 1
