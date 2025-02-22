@@ -48,7 +48,7 @@ def planificacionDieta():
     peso = int(input("Peso en kg: "))
 
     # Crear objeto Mascota
-    mascota = Mascota(nombre, especie, edad, sexo, EstadoSalud.SANO, tamano, peso)
+    mascota = Mascota(nombre, especie, edad, sexo, estadoSalud.SANO, tamano, peso)
 
     # Crear y calcular dieta
     dieta = Dieta(mascota)
