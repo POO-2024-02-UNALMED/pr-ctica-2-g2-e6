@@ -1,5 +1,3 @@
-from typing import Optional
-
 # BULA FUENTES, MELANIE
 # OSPINA GAVIRIA, TOMAS
 
@@ -7,7 +5,7 @@ from typing import Optional
 # Representa los artículos en venta en la tienda, incluyendo nombre, precio, tipo de animal, tipo de uso y cantidad disponible.
 
 class Producto:
-    def __init__(self, nombre: str, precio: float, tipo_uso: str, cantidad_unidades: int, tipo_animal: Optional[str] = None):
+    def __init__(self, nombre: str, precio: float, tipo_uso: str, cantidad_unidades: int, tipo_animal: str = None):
 
         self.nombre = nombre
         self.precio = precio
@@ -31,7 +29,7 @@ class Producto:
     def set_tipo_animal(self, tipo: str):
         self.tipo_animal = tipo
 
-    def get_tipo_animal(self) -> Optional[str]:
+    def get_tipo_animal(self, tipo_animal: str):
         return self.tipo_animal
 
     def set_tipo_uso(self, tipo_uso: str):
