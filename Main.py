@@ -4,6 +4,7 @@ from gestorAplicacion.elementos import Mascota
 from gestorAplicacion.gestion import Tienda
 from gestorAplicacion.elementos import Cliente
 from gestorAplicacion.elementos.CentroAdopcion import Sedes
+from gestorAplicacion.elementos import Producto
 
 def planificacionDieta():
     cliente = Cliente.registro()
