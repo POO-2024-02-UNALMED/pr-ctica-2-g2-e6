@@ -1,5 +1,6 @@
 from gestorAplicacion.elementos import CentroAdopcion
-from gestorAplicacion.elementos import Producto
+from gestorAplicacion.elementos.Producto import Producto
+
 
 class Tienda:
     # Listas estáticas para la serialización

@@ -1,3 +1,6 @@
+from .Producto import Producto
+from .CentroAdopcion import CentroAdopcion
+
 # BULA FUENTES, MELANIE
 # OSPINA GAVIRIA, TOMAS
 
