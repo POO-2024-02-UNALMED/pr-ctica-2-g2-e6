@@ -1,6 +1,6 @@
 from gestorAplicacion.elementos import Dieta
 from gestorAplicacion.gestion import Empleado
-from gestorAplicacion.elementos import Mascota, EstadoSalud
+from gestorAplicacion.elementos import Mascota
 from gestorAplicacion.gestion import Tienda
 from gestorAplicacion.elementos import Cliente
 from gestorAplicacion.elementos.CentroAdopcion import Sedes
