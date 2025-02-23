@@ -4,6 +4,9 @@ import sys
 import os
 import glob
 
+# LÓPEZ GONZÁLEZ, ALEJANDRO
+# BETANCUR URIBE, EMMANUEL
+
 try:
     from PIL import Image, ImageTk
 except ModuleNotFoundError:
@@ -14,9 +17,9 @@ except ModuleNotFoundError:
 
 window = tk.Tk()
 window.title("Ventana Principal de Inicio")
-window.geometry("1024x768")
-window.img_width = 300
-window.img_height = 225
+window.geometry("800x600")
+window.img_width = 240
+window.img_height = 180
 
 
 def load_images_from_folder(folder_path):
@@ -53,6 +56,7 @@ window.blue_images = load_images_from_folder("images/blue")
 window.img_index = 0
 window.text_index = 0
 
+<<<<<<< Updated upstream
 window.texts = ["Tomas Ospina", "Melanie Bula", "Santiago", "Emmanuel Betancur Uribe", "Alejandro López"]
 window.descriptions = [
     "hoja de vida 1",
@@ -61,6 +65,14 @@ window.descriptions = [
     "Hoja de vida 4",
     "Tengo 21 años y soy estudiante de ingenierìa de sistemas en la universidad nacional de Colombia."   
 ]
+=======
+window.texts = ["Tomas Ospina:",
+                "Melanie Bula Fuentes: Soy de Sahagún, tengo 17 años y soy estudiante \nde ingeniería de sistemas en la universidad nacional de Colombia.", 
+                "Santiago Martínez Ríos: Tengo 22 años, soy de Medellín y estudio \nIngeniería de Sistemas en la Universidad Nacional de Colombia",
+                "Emmanuel Betancur: Tengo 17 años, soy de Medellín \ny estudio Ingeniería de Sistemas en la Universidad Nacional.",
+                "Alejandro López: Tengo 21 años y soy estudiante de \ningenierìa de sistemas en la universidad nacional de Colombia."
+                ]
+>>>>>>> Stashed changes
 
 main_frame = tk.Frame(window)
 main_frame.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
@@ -71,6 +83,11 @@ frame_p3 = tk.Frame(main_frame, height=100, bg="lightgrey")
 #frame_p4 = tk.Frame(main_frame, height=100, bg="lightyellow")
 frame_p5 = tk.Frame(main_frame, height=100, bg="lightpink")
 
+<<<<<<< Updated upstream
+=======
+frame_p3.grid(row=0, column=0, sticky="nsew")
+frame_p5.grid(row=0, column=1, columnspan=2, sticky="nsew")
+>>>>>>> Stashed changes
 frame_p1.grid(row=1, column=0, sticky="nsew")
 frame_p2.grid(row=1, column=1, columnspan=2, sticky="nsew")
 frame_p3.grid(row=0, column=0, columnspan=1, sticky="nsew")
@@ -108,6 +125,7 @@ window.label_text = tk.Label(frame_p5, text=window.texts[window.text_index], fon
 window.label_text.pack(pady=20)
 window.label_text.bind("<Button-1>", cambiar_texto)
 
+<<<<<<< Updated upstream
 window.label_description = tk.Label(frame_p5, text=window.descriptions[window.text_index], font=("Arial", 10), wraplength=350, justify= "center")
 window.label_description.pack(pady=5)
 window.label_description.bind("<Button-1>", cambiar_texto)
@@ -115,4 +133,6 @@ window.label_description.bind("<Button-1>", cambiar_texto)
 #def run():
 #    window.mainloop()
 
+=======
+>>>>>>> Stashed changes
 window.mainloop()

@@ -10,9 +10,6 @@ from src.gestorAplicacion.elementos import Cliente
 from src.gestorAplicacion.elementos import CentroAdopcion
 from src.uiMain import InitialWin
 
-if __name__ == "__main__":
-    InitialWin.run()
-
 def planificacionDieta():
     cliente = Cliente.registro()
 
