@@ -69,7 +69,7 @@ frame_p3 = tk.Frame(main_frame, height=100, bg="lightgrey")
 #frame_p4 = tk.Frame(main_frame, height=100, bg="lightyellow")
 frame_p5 = tk.Frame(main_frame, height=100, bg="lightpink")
 frame_p1 = tk.Frame(main_frame, bg="lightblue")
-frame_p2 = tk.Frame(main_frame, bg="lightgreen")
+frame_p2 = tk.Frame(main_frame, bg="lightpink")
 frame_p4 = tk.Frame(main_frame, height=100, bg="lightyellow")
 
 
