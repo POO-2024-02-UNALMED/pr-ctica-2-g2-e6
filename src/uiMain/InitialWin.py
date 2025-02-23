@@ -63,11 +63,11 @@ window.img_index = 0
 window.text_index = 0
 
 #Textos hojas de vida
-window.texts = ["Tomas Ospina: Tengo 18 años, nacido en Medellín y \nestudiante de Ingeniería de Sistemas en la UNAL Medellín. ", 
-                "Melanie Bula: Soy de Sahagún, tengo 17 años y soy estudiante \nde ingeniería de sistemas en la universidad nacional de Colombia.", 
-                "Santiago Martínez Ríos: Tengo 22 años, soy de Medellín y estudio \nIngeniería de Sistemas en la Universidad Nacional de Colombia", 
-                "Emmanuel Betancur: Tengo 17 años, soy de Medellín \ny estudio Ingeniería de Sistemas en la UNAL.", 
-                "Alejandro López: Tengo 21 años y soy estudiante de ingenierìa \nde sistemas en la universidad nacional de Colombia."]
+window.texts = ["Tomas Ospina:Tengo 18 años, nacido en \nMedellín y estudiante de Ingeniería de Sistemas\nen la UNAL Medellín. ", 
+                "Melanie Bula:Soy de Sahagún, tengo 17 años \ny soy estudiante de ingeniería de sistemas\nen la universidad nacional de Colombia.", 
+                "Santiago Martínez Ríos:Tengo 22 años, soy de \nMedellín y estudio Ingeniería de Sistemas en la\nUniversidad Nacional de Colombia", 
+                "Emmanuel Betancur:Tengo 17 años, soy de Medellín\ny estudio Ingeniería de Sistemas en la Universidad\nNacional de Colombia.", 
+                "Alejandro López:Tengo 21 años y soy estudiante\nde ingenierìa de sistemas en la\nuniversidad nacional de Colombia."]
 
 #Menu inicio
 menu = tk.Menu(window)
@@ -85,7 +85,7 @@ main_frame.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
 #Subframes
 frame_p1 = tk.Frame(main_frame, bg="lightblue")
 frame_p2 = tk.Frame(main_frame, bg="lightpink")
-frame_p3 = tk.Frame(main_frame, height=100, bg="lightgrey")
+frame_p3 = tk.Frame(main_frame, height=100, bg="lightblue")
 #frame_p4 = tk.Frame(main_frame, height=100, bg="lightyellow")
 frame_p5 = tk.Frame(main_frame, height=100, bg="lightpink")
 frame_p1 = tk.Frame(main_frame, bg="lightblue")
@@ -110,7 +110,7 @@ main_frame.rowconfigure(1, weight=1)
 main_frame.rowconfigure(2, weight=0)
 
 #Bienvenida
-label_saludo = tk.Label(frame_p3, text="Bienvenido al centro veterinario: \nUNmascota", font=("Arial", 12))
+label_saludo = tk.Label(frame_p3, text="Bienvenido al \ncentro veterinario: \nUNmascota", font=("Arial", 18), fg="blue", bg="lightblue")
 label_saludo.pack(pady=20)
 
 #Ingreso a la app principal
@@ -119,7 +119,7 @@ btn_ingresar.place(x=10, rely=0.95, anchor="sw")
 
 #Slide de imagenes principales
 window.label_img = tk.Label(frame_p1, image=window.blue_images[window.img_index])
-window.label_img.pack(expand=True, pady=20)
+window.label_img.pack(expand=False, pady=65)
 window.label_img.bind("<Enter>", cambiar_imagen)
 
 #Imagenes de Hojas de vida
@@ -133,7 +133,7 @@ for i in range(2):
         window.p2_labels.append(lbl)
 
 #Eventos hoja de vida
-window.label_text = tk.Label(frame_p5, text=window.texts[window.text_index], font=("Arial", 12), cursor="hand2")
+window.label_text = tk.Label(frame_p5, text=window.texts[window.text_index], font=("Arial", 16), cursor="hand2", fg="green", bg="lightpink")
 window.label_text.pack(pady=20)
 window.label_text.bind("<Button-1>", cambiar_texto)
 
