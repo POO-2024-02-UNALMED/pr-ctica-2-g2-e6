@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 from typing import List
-from gestorAplicacion.gestion.Cupo import Cupo
+from .Cupo import Cupo
 
 class Empleado:
     class Especialidad:

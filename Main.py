@@ -1,7 +1,7 @@
 from gestorAplicacion.elementos import Dieta, Mascota, Cliente, Producto
 from gestorAplicacion.gestion import Empleado, Tienda
 from gestorAplicacion.elementos.CentroAdopcion import Sedes
-from uiMain import InitialWin
+from src.uiMain import InitialWin
 
 if __name__ == "__main__":
     InitialWin.run()

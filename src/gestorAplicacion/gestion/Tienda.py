@@ -1,5 +1,5 @@
-from gestorAplicacion.elementos import CentroAdopcion
-from gestorAplicacion.elementos.Producto import Producto
+from ..elementos.CentroAdopcion import CentroAdopcion
+from ..elementos.Producto import Producto
 
 
 class Tienda:

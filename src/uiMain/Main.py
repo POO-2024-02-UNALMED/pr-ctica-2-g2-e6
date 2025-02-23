@@ -9,6 +9,10 @@ from src.gestorAplicacion.elementos import Mascota
 from src.gestorAplicacion.gestion import Tienda
 from src.gestorAplicacion.elementos import Cliente
 from src.gestorAplicacion.elementos import CentroAdopcion
+from src.uiMain import InitialWin
+
+if __name__ == "__main__":
+    InitialWin.run()
 
 def planificacionDieta():
     cliente = Cliente.registro()
@@ -52,7 +56,7 @@ def planificacionDieta():
     peso = int(input("Peso en kg: "))
 
     # Crear objeto Mascota
-    mascota = Mascota(nombre, especie, edad, sexo, EstadoSalud.SANO, tamano, peso)
+    mascota = Mascota(nombre, especie, edad, sexo, estadoSalud.SANO, tamano, peso)
 
     # Crear y calcular dieta
     dieta = Dieta(mascota)
@@ -474,25 +478,6 @@ def obtener_datos_mascota(servicio):
     return mascota
 
 
-def agendar_servicio(cliente, mascota, sede, servicio):
-    cita = Cita(cliente, mascota, sede, servicio)
-    print(str(cita))
-    return cita
-
-def obtener_servicios(sede):
-    if sede == "Sede Medellin":
-        return ["Entrenamiento", "Veterinaria"]
-    elif sede == "Sede Bogota":
-        return ["Peluquería"]
-    elif sede == "Sede Cali":
-        return ["Veterinaria", "Entrenamiento"]
-    elif sede == "Sede Cartagena":
-        return ["Entrenamiento"]
-    return []
-
-##---------------------------------------------------------------------------------------------------------------------------------------------------------##
-
-
 def emergenciaVeterinaria():
 
     cliente = Cliente.registro()
@@ -586,7 +571,3 @@ def emergenciaVeterinaria():
             print("\nSu mascota " + mascota.getNombre() + " sigue hospitalizada.")
             print("Saliendo de Emergencia Veterinaria")
         
-
-if __name__ == "__main__":
-    # Ejecutar GUI
-    app = MainWin.MainWin()

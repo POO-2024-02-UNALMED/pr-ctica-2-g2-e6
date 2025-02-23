@@ -1,6 +1,6 @@
-from gestorAplicacion.elementos import Persona
-from gestorAplicacion.elementos import Mascota
-from uiMain import Main
+from .Persona import Persona
+from .Mascota import Mascota
+from ...uiMain import Main
 import pickle
 
 # LÓPEZ GONZÁLEZ, ALEJANDRO
