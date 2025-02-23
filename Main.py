@@ -1,10 +1,10 @@
-from gestorAplicacion.elementos import Dieta
-from gestorAplicacion.gestion import Empleado
-from gestorAplicacion.elementos import Mascota
-from gestorAplicacion.gestion import Tienda
-from gestorAplicacion.elementos import Cliente
+from gestorAplicacion.elementos import Dieta, Mascota, Cliente, Producto
+from gestorAplicacion.gestion import Empleado, Tienda
 from gestorAplicacion.elementos.CentroAdopcion import Sedes
-from gestorAplicacion.elementos import Producto
+from uiMain import InitialWin
+
+if __name__ == "__main__":
+    InitialWin.run()
 
 def planificacionDieta():
     cliente = Cliente.registro()
