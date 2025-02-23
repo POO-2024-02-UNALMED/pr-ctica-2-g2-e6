@@ -86,6 +86,8 @@ def mostrar_formulario_sedes():
     boton_seleccionar_sede = tk.Button(content_frame, text="Seleccionar Sede", command=seleccionar_sede)
     boton_seleccionar_sede.pack(pady=10)
 
+
+
 # Función para mostrar el formulario de selección de servicios
 def mostrar_formulario_servicios(sede):
     for widget in content_frame.winfo_children():
