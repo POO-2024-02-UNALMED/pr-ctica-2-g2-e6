@@ -45,7 +45,8 @@ def cambiar_texto(event):
 
 
 def ingresar_sistema():
-    print("Ingresando al sistema...")
+    window.destroy()
+    #print("Ingresando al sistema...")
 
 window.image_sets = [load_images_from_folder(f"images/set{i}") for i in range(1, 6)]
 window.blue_images = load_images_from_folder("images/blue")
