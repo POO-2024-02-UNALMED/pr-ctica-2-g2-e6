@@ -49,14 +49,14 @@ def cambiar_texto(event):
 
 def ingresar_sistema():
     window.destroy()
-    #print("Ingresando al sistema...")
-
+    import MainWin
+    
 window.image_sets = [load_images_from_folder(f"images/set{i}") for i in range(1, 6)]
 window.blue_images = load_images_from_folder("images/blue")
 window.img_index = 0
 window.text_index = 0
 
-window.texts = ["Tomas Ospina", "Melanie Bula", "Santiago", "Emmanuel Betancur Uribe", "Alejandro López"]
+window.texts = ["Tomas Ospina", " Melanie Bula Fuentes: Soy de Sahagún, tengo 17 años y soy estudiante \nde ingeniería de sistemas en la universidad nacional de Colombia.", "Santiago Martínez Ríos: Tengo 22 años, soy de Medellín y estudio \nIngeniería de Sistemas en la Universidad Nacional de Colombia", "Emmanuel Betancur: Tengo 17 años, soy de Medellín \ny estudio Ingeniería de Sistemas en la UNAL.", "Alejandro López: Tengo 21 años y soy estudiante de ingenierìa \nde sistemas en la universidad nacional de Colombia."]
 
 main_frame = tk.Frame(window)
 main_frame.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
@@ -86,7 +86,7 @@ main_frame.rowconfigure(1, weight=1)
 main_frame.rowconfigure(2, weight=0)
 
 
-label_saludo = tk.Label(frame_p3, text="Bienvenido al centro veterinario: UNmascota", font=("Arial", 12))
+label_saludo = tk.Label(frame_p3, text="Bienvenido al centro veterinario: \nUNmascota", font=("Arial", 12))
 label_saludo.pack(pady=20)
 
 btn_ingresar = tk.Button(main_frame, text="Ingresar", font=("Arial", 12), command=ingresar_sistema)
@@ -109,11 +109,4 @@ window.label_text = tk.Label(frame_p5, text=window.texts[window.text_index], fon
 window.label_text.pack(pady=20)
 window.label_text.bind("<Button-1>", cambiar_texto)
 
-#def run():
-#    window.mainloop()
-
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 window.mainloop()
