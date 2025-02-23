@@ -47,7 +47,7 @@ def cambiar_texto(event):
         lbl.config(image=window.image_sets[window.text_index][i])
 
 def info_app():
-    messagebox.showinfo("Aplicación", "Esta es la aplicacion de UNmascota, un sistema de gestion veterinaria para tu mascota, servicios de tienda, osario y nutricionista.")
+    messagebox.showinfo("Aplicación", "Está es la aplicación de UNmascota, un sistema de gestión veterinaria para tu mascota, servicios de tienda, osario y nutricionista.")
 
 def salir_app():
     window.quit()
