@@ -41,7 +41,6 @@ def cambiar_imagen(event):
 def cambiar_texto(event):
     window.text_index = (window.text_index + 1) % len(window.texts)
     window.label_text.config(text=window.texts[window.text_index])
-    window.label_description.config(text=window.descriptions[window.text_index])
     
     for i, lbl in enumerate(window.p2_labels):
         lbl.config(image=window.image_sets[window.text_index][i])
@@ -50,13 +49,16 @@ def cambiar_texto(event):
 def ingresar_sistema():
     window.destroy()
     import MainWin
-    
 window.image_sets = [load_images_from_folder(f"images/set{i}") for i in range(1, 6)]
 window.blue_images = load_images_from_folder("images/blue")
 window.img_index = 0
 window.text_index = 0
 
-window.texts = ["Tomas Ospina", " Melanie Bula Fuentes: Soy de Sahagún, tengo 17 años y soy estudiante \nde ingeniería de sistemas en la universidad nacional de Colombia.", "Santiago Martínez Ríos: Tengo 22 años, soy de Medellín y estudio \nIngeniería de Sistemas en la Universidad Nacional de Colombia", "Emmanuel Betancur: Tengo 17 años, soy de Medellín \ny estudio Ingeniería de Sistemas en la UNAL.", "Alejandro López: Tengo 21 años y soy estudiante de ingenierìa \nde sistemas en la universidad nacional de Colombia."]
+window.texts = ["Tomas Ospina", 
+                "Melanie Bula: Soy de Sahagún, tengo 17 años y soy estudiante \nde ingeniería de sistemas en la universidad nacional de Colombia.", 
+                "Santiago Martínez Ríos: Tengo 22 años, soy de Medellín y estudio \nIngeniería de Sistemas en la Universidad Nacional de Colombia", 
+                "Emmanuel Betancur: Tengo 17 años, soy de Medellín \ny estudio Ingeniería de Sistemas en la UNAL.", 
+                "Alejandro López: Tengo 21 años y soy estudiante de ingenierìa \nde sistemas en la universidad nacional de Colombia."]
 
 main_frame = tk.Frame(window)
 main_frame.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
@@ -70,8 +72,9 @@ frame_p1 = tk.Frame(main_frame, bg="lightblue")
 frame_p2 = tk.Frame(main_frame, bg="lightgreen")
 frame_p4 = tk.Frame(main_frame, height=100, bg="lightyellow")
 
-frame_p3.grid(row=0, column=0, columnspan=2, sticky="nsew")
-frame_p5.grid(row=0, column=2, sticky="nsew")
+
+frame_p3.grid(row=0, column=0, sticky="nsew")
+frame_p5.grid(row=0, column=1, columnspan=2, sticky="nsew")
 frame_p1.grid(row=1, column=0, sticky="nsew")
 frame_p2.grid(row=1, column=1, columnspan=2, sticky="nsew")
 frame_p3.grid(row=0, column=0, columnspan=1, sticky="nsew")
