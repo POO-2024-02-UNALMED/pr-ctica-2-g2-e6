@@ -2,7 +2,6 @@ import sys
 import os
 # Añade el directorio raíz del proyecto al PYTHONPATH
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from src.uiMain import MainWin
 from src.gestorAplicacion.elementos import Dieta
 from src.gestorAplicacion.gestion import Empleado
 from src.gestorAplicacion.elementos import Mascota
