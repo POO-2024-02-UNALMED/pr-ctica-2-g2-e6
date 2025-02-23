@@ -54,7 +54,7 @@ window.blue_images = load_images_from_folder("images/blue")
 window.img_index = 0
 window.text_index = 0
 
-window.texts = ["Tomas Ospina", 
+window.texts = ["Tomas Ospina: Tengo 18 años, nacido en Medellín y \nestudiante de Ingeniería de Sistemas en la UNAL Medellín. ", 
                 "Melanie Bula: Soy de Sahagún, tengo 17 años y soy estudiante \nde ingeniería de sistemas en la universidad nacional de Colombia.", 
                 "Santiago Martínez Ríos: Tengo 22 años, soy de Medellín y estudio \nIngeniería de Sistemas en la Universidad Nacional de Colombia", 
                 "Emmanuel Betancur: Tengo 17 años, soy de Medellín \ny estudio Ingeniería de Sistemas en la UNAL.", 
