@@ -1,4 +1,14 @@
 import tkinter as tk
+import sys
+import os
+# Añade el directorio raíz del proyecto al PYTHONPATH
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+from src.gestorAplicacion.elementos.Dieta import Dieta
+from src.gestorAplicacion.gestion.Empleado import Empleado
+from src.gestorAplicacion.elementos.Mascota import Mascota
+from src.gestorAplicacion.gestion.Tienda import Tienda
+from src.gestorAplicacion.elementos.Cliente import Cliente
+from src.gestorAplicacion.elementos.CentroAdopcion import CentroAdopcion
 from tkinter import messagebox, simpledialog
 
 # Función para mostrar información de la aplicación
@@ -45,8 +55,10 @@ def mostrar_interfaz_principal(proceso_seleccionado=None):
         
         if proceso_seleccionado.startswith("Proceso 2"):
             mostrar_formulario_sedes()
-        elif proceso_seleccionado.startswith("Proceso 3") or proceso_seleccionado.startswith("Proceso 4") or proceso_seleccionado.startswith("Proceso 5"):
+        elif proceso_seleccionado.startswith("Proceso 3") or proceso_seleccionado.startswith("Proceso 4"):
             mostrar_formulario_registro()
+        elif proceso.startswith("Proceso 5"):
+            mostrar_formulario_dietas()
     else:
         etiqueta_proceso = tk.Label(content_frame, text="Seleccione un proceso del menú", font=("Arial", 18), fg="black")
         etiqueta_proceso.pack(pady=10)
@@ -181,6 +193,108 @@ def mostrar_formulario_mascota():
     boton_registrar_mascota = tk.Button(content_frame, text="Registrar Mascota", command=registrar_mascota)
     boton_registrar_mascota.grid(row=4, column=0, columnspan=2, pady=10)
 
+#Planeacion Dieta
+#-----------------------------------------------------------------------------------------------
+
+def mostrar_formulario_dietas():
+    for widget in content_frame.winfo_children():
+        widget.destroy()
+    
+    tk.Label(content_frame, text="Planificación de Dieta", font=("Arial", 18, "bold")).pack(pady=10)
+    
+    tk.Label(content_frame, text="Nombre de la mascota:").pack()
+    entry_nombre = tk.Entry(content_frame)
+    entry_nombre.pack()
+    
+    tk.Label(content_frame, text="Especie:").pack()
+    especie_var = tk.StringVar()
+    opciones_especie = ["Perro", "Gato"]
+    tk.OptionMenu(content_frame, especie_var, *opciones_especie).pack()
+    
+    tk.Label(content_frame, text="Edad (años):").pack()
+    entry_edad = tk.Entry(content_frame)
+    entry_edad.pack()
+    
+    tk.Label(content_frame, text="Sexo:").pack()
+    sexo_var = tk.StringVar()
+    opciones_sexo = ["Macho", "Hembra"]
+    tk.OptionMenu(content_frame, sexo_var, *opciones_sexo).pack()
+    
+    tk.Label(content_frame, text="Tamaño:").pack()
+    tamano_var = tk.StringVar()
+    opciones_tamano = ["Miniatura", "Pequeño", "Mediano", "Grande"]
+    tk.OptionMenu(content_frame, tamano_var, *opciones_tamano).pack()
+    
+    tk.Label(content_frame, text="Peso en kg:").pack()
+    entry_peso = tk.Entry(content_frame)
+    entry_peso.pack()
+    
+    def calcular_dieta():
+        try:
+            nombre = entry_nombre.get()
+            especie = especie_var.get()
+            sexo = sexo_var.get()
+            if tamano_var.get() == "Miniatura":
+                tamano = 1
+            elif tamano_var.get() == "Pequeño":
+                tamano = 2
+            elif tamano_var.get() == "Mediano":
+                tamano = 3
+            else:
+                tamano = 4
+            edad = int(entry_edad.get())
+            peso = float(entry_peso.get())
+            if not nombre or not especie or not edad or not sexo or not tamano or not peso:
+                messagebox.showwarning("Error", "Por favor seleccione valores válidos.")
+                return
+            # Crear objeto Mascota
+            mascota = Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
+
+            # Crear y calcular dieta
+            dieta = Dieta(mascota)
+            dieta.calcularPesoIdeal()
+            dieta.planDieta()
+            dieta.menu()
+            messagebox.showinfo(f"Plan de dieta", f"{dieta}")
+        except ValueError:
+            messagebox.showwarning("Error", "Ingrese valores numéricos válidos.")
+    
+    tk.Button(content_frame, text="Calcular Dieta", command=calcular_dieta).pack(pady=10)
+
+    # Mini tienda de productos dietéticos
+    #tipoDietaBarf = f"Dieta Barf para {especie}s"
+
+    #tienda = Tienda(Empleado("Albert", 22, 555, 1323, "West Elm", "Vendedor"))
+    #productosBarf = [
+    #    Producto(f"Dieta Barf Alta en Proteínas para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000),
+     #   Producto(f"Dieta Barf Alta en Grasas para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000),
+      #  Producto(f"Dieta Barf Alta en Carbohidratos para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000)
+    #]
+
+#    for producto in productosBarf:
+ #       tienda.agregarProducto(producto)
+
+  #  # Compra de Dieta Barf
+   # print("\n¿Desea adquirir Dieta Barf para su mascota? [si/no]: ")
+    #while True:    
+     #   respuesta = input().lower()
+      #  if respuesta == "si":
+      #      print(f"\nSabores disponibles de {tipoDietaBarf}:")
+       #     print(tienda.filtrar("Dieta"))
+        #    opcionSabor = int(input("Ingrese el número del sabor que desea: "))
+         #  resultadoCompra = tienda.compra(opcionSabor, cantidadGramos, cliente)
+          #  print(resultadoCompra)
+        #    print("¿Desea seguir comprando? [Si/No]: ")
+        #    return
+       # elif respuesta == "no":
+        #    print("\nGracias por ingresar a la interfaz de planificación de dieta!\nRedirigiéndote al menú principal...\n")
+         #   break
+        #else:
+        #    print("ingresa un valor valido (si/no)")
+         #   return
+
+#-----------------------------------------------------------------------------------------------
+
 # Ventana principal
 root = tk.Tk()
 root.title("Interfaz de Aplicación")
@@ -210,7 +324,7 @@ procesos = [
     "Proceso 2: Descripción del proceso 2",
     "Proceso 3: Descripción del proceso 3",
     "Proceso 4: Descripción del proceso 4",
-    "Proceso 5: Descripción del proceso 5"
+    "Proceso 5: Planificacion de Dietas"
 ]
 
 for proceso in procesos:

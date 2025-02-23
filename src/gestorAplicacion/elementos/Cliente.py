@@ -1,6 +1,5 @@
 from .Persona import Persona
 from .Mascota import Mascota
-from ...uiMain import Main
 import pickle
 
 # LÓPEZ GONZÁLEZ, ALEJANDRO
@@ -34,13 +33,50 @@ class Cliente(Persona):
 
     def get_puntos(self):
         return self.puntos
-
+    
     @staticmethod
     def registro():
-        datos = Main.capturar_datos_cliente()
-        cliente = Cliente(datos[0], datos[1], datos[2])
+        print("\nAntes de continuar, le informamos que para hacer uso del servicio seleccionado la persona encargada de la mascota debe ser mayor de edad.\n")
+        input()
+        nombre = input("Ingrese su nombre: ").strip()
+        edad = 0
+        while edad <= 0:
+            try:
+                edad = int(input("Ingrese su edad: "))
+                if edad <= 0:
+                    print("Proporcione una respuesta válida.\n")
+            except ValueError:
+                print("Proporcione una respuesta válida.\n")
+
+        # Si el usuario es menor de edad, se piden los datos de un adulto responsable
+        if edad < Cliente.EDAD_MINIMA:
+            print("El interesado en hacer uso del servicio seleccionado es menor de edad.\n")
+            while edad < 18:
+                print("Proporcione los datos de un adulto responsable: ")
+                nombre = input("Ingrese su nombre: ").strip()
+                try:
+                    edad = int(input("Ingrese su edad: "))
+                    if edad <= 0:
+                        print("Proporcione una edad válida.\n")
+                    if edad > 0 and edad < 18:
+                        print("La edad ingresada no corresponde a la de un adulto.\n")
+                except ValueError:
+                    print("Proporcione una respuesta válida.\n")
+
+        cedula = 0
+        while cedula <= 0:
+            try:
+                cedula = int(input("Ingrese su número de identificación: "))
+                if cedula <= 0:
+                    print("Proporcione una respuesta válida.\n")
+                    cedula = 0
+            except ValueError:
+                print("Proporcione una respuesta válida.\n")
+
+        cliente = Cliente(nombre, edad, cedula)
         cliente.agregar_puntos(0)
         return cliente
+
 
     def set_mascota(self, mascota):
         self.mascota = mascota

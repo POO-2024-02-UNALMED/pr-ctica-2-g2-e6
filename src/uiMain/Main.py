@@ -2,12 +2,12 @@ import sys
 import os
 # Añade el directorio raíz del proyecto al PYTHONPATH
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
-from src.gestorAplicacion.elementos import Dieta
-from src.gestorAplicacion.gestion import Empleado
-from src.gestorAplicacion.elementos import Mascota
-from src.gestorAplicacion.gestion import Tienda
-from src.gestorAplicacion.elementos import Cliente
-from src.gestorAplicacion.elementos import CentroAdopcion
+from src.gestorAplicacion.elementos.Dieta import Dieta
+from src.gestorAplicacion.gestion.Empleado import Empleado
+from src.gestorAplicacion.elementos.Mascota import Mascota
+from src.gestorAplicacion.gestion.Tienda import Tienda
+from src.gestorAplicacion.elementos.Cliente import Cliente
+from src.gestorAplicacion.elementos.CentroAdopcion import CentroAdopcion
 from src.uiMain import InitialWin
 
 def planificacionDieta():
@@ -52,7 +52,7 @@ def planificacionDieta():
     peso = int(input("Peso en kg: "))
 
     # Crear objeto Mascota
-    mascota = Mascota(nombre, especie, edad, sexo, estadoSalud.SANO, tamano, peso)
+    mascota = Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
 
     # Crear y calcular dieta
     dieta = Dieta(mascota)
@@ -566,4 +566,3 @@ def emergenciaVeterinaria():
         elif alta == 2:
             print("\nSu mascota " + mascota.getNombre() + " sigue hospitalizada.")
             print("Saliendo de Emergencia Veterinaria")
-        
