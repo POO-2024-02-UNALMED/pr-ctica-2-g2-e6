@@ -3,7 +3,9 @@ from FieldFrame import FieldFrame
 from tkinter import ttk, messagebox
 import json
 # Importaciones corregidas
-from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad, CentroAdopcion, Mascota, Cliente, Dieta, EstadoSalud
+from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad, CentroAdopcion, Mascota, Cliente, Dieta, EstadoSalud, Memorial, Fallecido
+from src.baseDatos.serializador import cargar_datos  
+from src.gestorAplicacion.elementos.Producto import Producto  
 
 # ===========================
 # FUNCIONES GENERALES
@@ -52,7 +54,7 @@ def manejar_seleccion_proceso(proceso):
     elif "Proceso 3" in proceso:
         emergencia()
     elif "Proceso 4" in proceso:
-        mostrar_formulario_registro()
+        gestionar_memorial()
     elif "Proceso 5" in proceso:
         mostrar_formulario_dietas()
     else:
@@ -319,7 +321,7 @@ def inicio_tienda():
     limpiar_frame(content_frame)
 
     # Cargar productos desde el archivo serializado
-    _, productos = cargar_datos()
+    productos = cargar_datos()
 
     if not productos:
         messagebox.showwarning("Error", "No se encontraron productos disponibles.")
@@ -679,6 +681,176 @@ def emergencia():
 
 
 #----------------------------------------------------------------------------------------------
+memorial = Memorial(CentroAdopcion("Centro de Ejemplo"))
+
+def gestionar_memorial():
+
+    def registro():
+        for widget in content_frame.winfo_children():
+            widget.destroy()
+        
+        tk.Label(content_frame, text="Servicio Memorial", font=("Arial", 18)).pack(pady=10)
+        tk.Label(content_frame, text="Ingrese sus datos", font=("Arial", 14)).pack(pady=10)
+        
+        tk.Label(content_frame, text="Nombre Completo:", font=("Arial", 14)).pack()
+        entry_nombre = tk.Entry(content_frame)
+        entry_nombre.pack()
+        
+        tk.Label(content_frame, text="Edad:", font=("Arial", 14)).pack()
+        entry_edad = tk.Entry(content_frame)
+        entry_edad.pack()
+        
+        tk.Label(content_frame, text="Cédula:", font=("Arial", 14)).pack()
+        entry_cedula = tk.Entry(content_frame)
+        entry_cedula.pack()
+        
+        def continuar():
+            nombre_cliente = entry_nombre.get()
+            edad_cliente = entry_edad.get()
+            cedula_cliente = entry_cedula.get()
+            if not nombre_cliente or not edad_cliente or not cedula_cliente:
+                messagebox.showwarning("Error", "Ingrese valores válidos.")
+                return
+            gestionar_opciones()
+        
+        tk.Button(content_frame, text="Continuar", command=continuar).pack(pady=10)
+
+    def gestionar_opciones():
+        for widget in content_frame.winfo_children():
+            widget.destroy()
+        
+        tk.Label(content_frame, text="¿Qué desea hacer?", font=("Arial", 18)).pack(pady=10)
+        tk.Button(content_frame, text="Añadir Memorial", command=anadir_memorial).pack(pady=5)
+        tk.Button(content_frame, text="Ver Memorial", command=ver_memorial).pack(pady=5)
+        tk.Button(content_frame, text="Decorar Memorial", command=decorar_memorial).pack(pady=5)
+        tk.Button(content_frame, text="Volver al Menú Principal", command=registro).pack(pady=10)
+
+    def anadir_memorial():
+        for widget in content_frame.winfo_children():
+            widget.destroy()
+        
+        tk.Label(content_frame, text="Añadir Memorial", font=("Arial", 18)).pack(pady=10)
+        tk.Label(content_frame, text="Nombre del Fallecido:", font=("Arial", 14)).pack()
+        entry_nombre_fallecido = tk.Entry(content_frame)
+        entry_nombre_fallecido.pack()
+        
+        tk.Label(content_frame, text="Especie:", font=("Arial", 14)).pack()
+        entry_especie = tk.Entry(content_frame)
+        entry_especie.pack()
+        
+        tk.Label(content_frame, text="Edad de la mascota:", font=("Arial", 14)).pack()
+        entry_edad_mascota = tk.Entry(content_frame)
+        entry_edad_mascota.pack()
+        
+        tk.Label(content_frame, text="Fecha de Fallecimiento (YYYY-MM-DD):", font=("Arial", 14)).pack()
+        entry_fecha = tk.Entry(content_frame)
+        entry_fecha.pack()
+        
+        tk.Label(content_frame, text="Seleccione un mensaje:", font=("Arial", 14)).pack()
+        mensaje_var = tk.StringVar()
+        mensaje_var.set("Descansa en paz")
+        mensajes = ["Descansa en paz", "Siempre en nuestros corazones", "Nunca te olvidaremos"]
+        tk.OptionMenu(content_frame, mensaje_var, *mensajes).pack()
+        
+        tk.Label(content_frame, text="Tipo de memorial:", font=("Arial", 14)).pack()
+        tipo_var = tk.StringVar()
+        tipo_var.set("Tumba")
+        tipos = ["Tumba", "Osario", "Cenizas", "Arbol"]
+        tk.OptionMenu(content_frame, tipo_var, *tipos).pack()
+        
+        def guardar_memorial():
+            nombre_fallecido = entry_nombre_fallecido.get()
+            especie_fallecido = entry_especie.get()
+            edad_mascota = entry_edad_mascota.get()
+            fecha = entry_fecha.get()
+            mensaje = mensaje_var.get()
+            tipo = tipo_var.get()
+            
+            if not nombre_fallecido or not especie_fallecido or not edad_mascota or not fecha:
+                messagebox.showwarning("Error", "Por favor complete todos los campos.")
+                return
+            
+            mascota = Mascota(nombre_fallecido, especie_fallecido, int(edad_mascota), None, None, 0, 0) 
+            fallecido = Fallecido(mascota, fecha, mensaje, None, "", tipo)
+            memorial.anadir_fallecido(fallecido, tipo)
+            messagebox.showinfo("Éxito", "Memorial añadido correctamente.")
+            gestionar_opciones()
+        
+        tk.Button(content_frame, text="Guardar Memorial", command=guardar_memorial).pack(pady=10)
+        tk.Button(content_frame, text="Volver", command=gestionar_opciones).pack(pady=5)
+    
+    def ver_memorial():
+        for widget in content_frame.winfo_children():
+            widget.destroy()
+        
+        tk.Label(content_frame, text="Ver Memorial", font=("Arial", 18)).pack(pady=10)
+        tipo_var = tk.StringVar()
+        tipo_var.set("Tumba")
+        tipos = ["Tumba", "Osario", "Cenizas", "Arbol"]
+        tk.OptionMenu(content_frame, tipo_var, *tipos).pack()
+        
+        def mostrar_memorial():
+            tipo = tipo_var.get()
+            registros = memorial.obtener_fallecidos_por_tipo(tipo)
+            
+            if not registros:
+                messagebox.showinfo("Memorial", "No hay registros en esta categoría.")
+            else:
+                resultado = "\n".join([str(f) for f in registros])
+                messagebox.showinfo(f"Registros en {tipo}", resultado)
+        
+        tk.Button(content_frame, text="Ver", command=mostrar_memorial).pack(pady=10)
+        tk.Button(content_frame, text="Volver", command=gestionar_opciones).pack(pady=5)
+    
+    def decorar_memorial():
+        for widget in content_frame.winfo_children():
+            widget.destroy()
+    
+        tk.Label(content_frame, text="Decorar Memorial", font=("Arial", 18)).pack(pady=10)
+    
+        tk.Label(content_frame, text="Seleccione el tipo de memorial:", font=("Arial", 14)).pack()
+        tipo_var = tk.StringVar()
+        tipo_var.set("Tumba")
+        tipos = ["Tumba", "Osario", "Cenizas", "Árbol"]
+        tk.OptionMenu(content_frame, tipo_var, *tipos).pack()
+    
+        def seleccionar_memorial():
+            tipo = tipo_var.get()
+            registros = memorial.obtener_fallecidos_por_tipo(tipo)
+
+            if not registros:
+                messagebox.showinfo("Memorial", "No hay registros en esta categoría.")
+                return
+        
+            seleccion_index = tk.IntVar()
+            seleccion_index.set(0)
+        
+            opciones_nombres = [f.get_mascota().getNombre() for f in registros]
+            tk.OptionMenu(content_frame, seleccion_index, *range(len(opciones_nombres))).pack()
+
+            tk.Label(content_frame, text="Ingrese una flor:", font=("Arial", 14)).pack()
+            entry_flor = tk.Entry(content_frame)
+            entry_flor.pack()
+        
+            def agregar_flor():
+                flor = entry_flor.get()
+                index = seleccion_index.get()
+
+                if not flor:
+                    messagebox.showwarning("Error", "Ingrese una flor válida.")
+                    return
+            
+                fallecido = registros[index]
+                mensaje = fallecido.poner_flor(flor)
+                messagebox.showinfo("Decoración", mensaje)
+        
+            tk.Button(content_frame, text="Añadir Flor", command=agregar_flor).pack(pady=10)
+    
+        tk.Button(content_frame, text="Seleccionar Memorial", command=seleccionar_memorial).pack(pady=10)
+        tk.Button(content_frame, text="Volver", command=gestionar_opciones).pack(pady=5)
+    
+    
+    registro()
 
 #Planeacion Dieta
 #-----------------------------------------------------------------------------------------------
@@ -738,7 +910,7 @@ def mostrar_formulario_dietas():
             mascota = Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
 
             # Crear y calcular dieta
-            dieta = Dieta.Dieta(mascota)
+            dieta = Dieta(mascota)
             dieta.calcularPesoIdeal()
             dieta.planDieta()
             dieta.menu()

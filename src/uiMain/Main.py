@@ -11,6 +11,8 @@ from src.gestorAplicacion.elementos.centroAdopcion import CentroAdopcion
 from src.gestorAplicacion.elementos.Producto import Producto
 from src.gestorAplicacion.gestion.Cupo import Cupo
 from src.gestorAplicacion.elementos.estado_Salud import EstadoSalud
+from src.gestorAplicacion.gestion.Memorial import Memorial
+from src.gestorAplicacion.elementos.Fallecido import Fallecido
 from tkinter import messagebox
 from src.baseDatos.serializador import cargar_datos
 

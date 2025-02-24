@@ -85,4 +85,4 @@ class Fallecido:
 
     # ---> Método ToString <---
     def __str__(self):
-        return f"{self.mascota.get_nombre()}\n{self.fecha}\n{self.mensaje}\n{self.mostrar_flores()}\n"
+        return f"{self.mascota.getNombre()}\n{self.fecha}\n{self.mensaje}\n{self.mostrar_flores()}\n"

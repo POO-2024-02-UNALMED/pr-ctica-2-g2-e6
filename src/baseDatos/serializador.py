@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")
 from src.gestorAplicacion.elementos.centroAdopcion import CentroAdopcion
 from src.gestorAplicacion.gestion.Cupo import Cupo
 from src.gestorAplicacion.gestion.empleado import Empleado
-from src.gestorAplicacion.elementos import Producto
+from src.gestorAplicacion.elementos.Producto import Producto
 
 def crear_datos_iniciales():
     # Crear centros de adopción con datos iniciales
@@ -67,16 +67,42 @@ def crear_datos_iniciales():
             )
             centro.agregarEmpleado(empleado)
 
-    return centros_adopcion
+    productos = [
+        Producto("Comida para Perros", 25.99, "Alimento", 100, "Perro"),
+        Producto("Comida para Gatos", 20.99, "Alimento", 80, "Gato"),
+        Producto("Juguete para Perros", 15.50, "Juguete", 50, "Perro"),
+        Producto("Juguete para Gatos", 12.50, "Juguete", 60, "Gato"),
+        Producto("Cama para Conejos", 30.00, "Accesorio", 30, "Conejo"),
+        Producto("Jaula para Aves", 45.00, "Accesorio", 20, "Ave"),
+        Producto("Shampoo para Perros", 10.00, "Higiene", 70, "Perro"),
+        Producto("Shampoo para Gatos", 9.50, "Higiene", 65, "Gato"),
+        Producto("Cepillo para Conejos", 8.00, "Higiene", 40, "Conejo"),
+        Producto("Comedero para Aves", 12.00, "Accesorio", 25, "Ave")
+    ]
 
-def guardar_datos(centros_adopcion, ruta="src/baseDatos/temp/centros_adopcion.pkl"):
-    os.makedirs(os.path.dirname(ruta), exist_ok=True)
-    with open(ruta, 'wb') as file:
+    return centros_adopcion, productos
+
+
+def guardar_datos(centros_adopcion, productos, ruta_centros="src/baseDatos/temp/centros_adopcion.pkl", ruta_productos="src/baseDatos/temp/productos.pkl"):
+    os.makedirs(os.path.dirname(ruta_centros), exist_ok=True)
+    with open(ruta_centros, 'wb') as file:
         pickle.dump(centros_adopcion, file)
 
-def cargar_datos(ruta="src/baseDatos/temp/centros_adopcion.pkl"):
-    if not os.path.exists(ruta):
-        return None
-    with open(ruta, 'rb') as file:
-        return pickle.load(file)
+    os.makedirs(os.path.dirname(ruta_productos), exist_ok=True)
+    with open(ruta_productos, 'wb') as file:
+        pickle.dump(productos, file)
+
+def cargar_datos(ruta_centros="src/baseDatos/temp/centros_adopcion.pkl", ruta_productos="src/baseDatos/temp/productos.pkl"):
+    centros_adopcion = None
+    productos = None
+
+    if os.path.exists(ruta_centros):
+        with open(ruta_centros, 'rb') as file:
+            centros_adopcion = pickle.load(file)
+
+    if os.path.exists(ruta_productos):
+        with open(ruta_productos, 'rb') as file:
+            productos = pickle.load(file)
+
+    return centros_adopcion, productos
 
