@@ -1,7 +1,7 @@
 from enum import Enum
 from .Mascota import Mascota
 from .Mascota import EstadoSalud
-from ..gestion.empleado import Empleado
+from ..gestion.Empleado import Empleado
 class Sedes(Enum):
     MEDELLIN = 1
     BOGOTA = 2
