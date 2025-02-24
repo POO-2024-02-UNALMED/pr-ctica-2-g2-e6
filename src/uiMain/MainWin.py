@@ -4,6 +4,8 @@ from tkinter import ttk, messagebox
 import json
 # Importaciones corregidas
 from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad, CentroAdopcion, Mascota, Cliente, Dieta, EstadoSalud, Memorial, Fallecido
+from src.baseDatos.serializador import cargar_datos  
+from src.gestorAplicacion.elementos.Producto import Producto  
 
 # ===========================
 # FUNCIONES GENERALES
@@ -319,7 +321,7 @@ def inicio_tienda():
     limpiar_frame(content_frame)
 
     # Cargar productos desde el archivo serializado
-    _, productos = cargar_datos()
+    productos = cargar_datos()
 
     if not productos:
         messagebox.showwarning("Error", "No se encontraron productos disponibles.")
