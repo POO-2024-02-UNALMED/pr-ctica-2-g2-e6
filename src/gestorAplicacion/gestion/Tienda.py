@@ -1,4 +1,4 @@
-from ..elementos.CentroAdopcion import CentroAdopcion
+from ..elementos.centroAdopcion import CentroAdopcion
 from ..elementos.Producto import Producto
 
 

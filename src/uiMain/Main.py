@@ -3,11 +3,11 @@ import os
 # Añade el directorio raíz del proyecto al PYTHONPATH
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from src.gestorAplicacion.elementos.Dieta import Dieta
-from src.gestorAplicacion.gestion.Empleado import Empleado
+from src.gestorAplicacion.gestion.empleado import Empleado
 from src.gestorAplicacion.elementos.Mascota import Mascota
 from src.gestorAplicacion.gestion.Tienda import Tienda
 from src.gestorAplicacion.elementos.Cliente import Cliente
-from src.gestorAplicacion.elementos.CentroAdopcion import CentroAdopcion
+from src.gestorAplicacion.elementos.centroAdopcion import CentroAdopcion
 from src.gestorAplicacion.elementos.Producto import Producto
 from src.gestorAplicacion.gestion.Cupo import Cupo
 from src.gestorAplicacion.elementos.estado_Salud import EstadoSalud
