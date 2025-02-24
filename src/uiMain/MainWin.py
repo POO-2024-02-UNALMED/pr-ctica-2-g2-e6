@@ -633,7 +633,7 @@ def emergencia():
                         messagebox.showwarning("Error", "Por favor ingrese valores válidos.")
                         return
 
-                    mascota = Mascota.Mascota(nombre_mascota, especie, edad_mascota, sexo, EstadoSalud.ENFERMO, tamaño, peso)
+                    mascota = Mascota(nombre_mascota, especie, edad_mascota, sexo, EstadoSalud.ENFERMO, tamaño, peso)
 
                     boton_continuar = tk.Button(content_frame, text="Continuar", command=continuar_2)
                     boton_continuar.pack(pady=5)
@@ -735,10 +735,10 @@ def mostrar_formulario_dietas():
                 messagebox.showwarning("Error", "Por favor seleccione valores válidos.")
                 return
             # Crear objeto Mascota
-            mascota = Mascota.Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
+            mascota = Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
 
             # Crear y calcular dieta
-            dieta = Dieta.Dieta(mascota)
+            dieta = Dieta(mascota)
             dieta.calcularPesoIdeal()
             dieta.planDieta()
             dieta.menu()
