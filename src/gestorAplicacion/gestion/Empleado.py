@@ -58,7 +58,7 @@ class Empleado:
     
     def tiene_cupos(self) -> bool:
         self.actualizar_datos()
-        return any(Cupo.is_disponible() for cupos_dia in self.agenda_dias for cupo in cupos_dia)
+        return any(cupo.is_disponible() for cupos_dia in self.agenda_dias for cupo in cupos_dia)
     
     def cupos_disponibles(self, dia: int) -> List[Cupo]:
         disponibles = []

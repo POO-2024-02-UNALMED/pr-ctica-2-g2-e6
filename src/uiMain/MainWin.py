@@ -1,240 +1,432 @@
 import tkinter as tk
-from tkinter import messagebox, simpledialog
+from FieldFrame import FieldFrame
+from tkinter import ttk, messagebox
+import json
+# Importaciones corregidas
+from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad
+import tkinter as tk
+from FieldFrame import FieldFrame
+from tkinter import ttk, messagebox
+import json
+# Importaciones corregidas
+from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad
 
-# Función para mostrar información de la aplicación
+# ===========================
+# FUNCIONES GENERALES
+# ===========================
+
 def mostrar_info_aplicacion():
     messagebox.showinfo("Aplicación", "Esta aplicación realiza varias operaciones y consultas.")
 
-# Función para mostrar información de los autores
 def mostrar_info_autores():
     messagebox.showinfo("Acerca de", "Autores: Mel Bulaf")
 
-# Función para salir de la aplicación
 def salir_aplicacion():
     root.quit()
 
-# Función para manejar la selección de procesos
-def manejar_seleccion_proceso(proceso):
-    mostrar_interfaz_principal(proceso)
+# ===========================
+# INTERFAZ INICIAL
+# ===========================
 
-# Función para mostrar la interfaz inicial
 def mostrar_interfaz_inicial():
-    for widget in content_frame.winfo_children():
-        widget.destroy()
-    label = tk.Label(content_frame, text="Bienvenido a la Aplicación", font=("Arial", 24, "bold"), fg="blue")
-    label.pack(pady=20)
-    texto_instrucciones = (
-        "Esta aplicación permite realizar varias operaciones y consultas.\n"
-        "Utilice el menú 'Archivo' para ver la información de la aplicación o salir.\n"
-        "Utilice el menú 'Procesos y Consultas' para listar todas las funcionalidades disponibles.\n"
-        "Utilice el menú 'Ayuda' para información sobre los autores."
-    )
-    instrucciones = tk.Label(content_frame, text=texto_instrucciones, font=("Arial", 14), justify=tk.LEFT, wraplength=600, fg="green")
-    instrucciones.pack(pady=20, expand=True, fill="both")
-
-# Función para mostrar la interfaz principal
-def mostrar_interfaz_principal(proceso_seleccionado=None):
-    for widget in content_frame.winfo_children():
-        widget.destroy()
-    etiqueta_principal = tk.Label(content_frame, text="Procesos y Consultas", font=("Arial", 24, "bold"), fg="blue")
-    etiqueta_principal.pack(pady=20)
+    limpiar_frame(content_frame)
     
-    if proceso_seleccionado:
-        etiqueta_proceso = tk.Label(content_frame, text=f"Has seleccionado: {proceso_seleccionado}", font=("Arial", 18), fg="black")
-        etiqueta_proceso.pack(pady=10)
-        
-        if proceso_seleccionado.startswith("Proceso 2"):
-            mostrar_formulario_sedes()
-        elif proceso_seleccionado.startswith("Proceso 3") or proceso_seleccionado.startswith("Proceso 4") or proceso_seleccionado.startswith("Proceso 5"):
-            mostrar_formulario_registro()
+    ttk.Label(content_frame, text="Bienvenido a la Aplicación", font=("Arial", 24, "bold"), foreground="#004080").pack(pady=20)
+
+    ttk.Label(
+        content_frame, 
+        text="Seleccione una de las opciones del menú para acceder a diferentes procesos y servicios.",
+        font=("Arial", 14), 
+        justify=tk.CENTER,
+        wraplength=600
+    ).pack(pady=20)
+
+# ===========================
+# SELECCIÓN DE PROCESO
+# ===========================
+
+def manejar_seleccion_proceso(proceso):
+    limpiar_frame(content_frame)
+    
+    etiqueta_proceso = ttk.Label(content_frame, text=f"Has seleccionado: {proceso}", font=("Arial", 18))
+    etiqueta_proceso.pack(pady=10)
+
+    if "Proceso 1" in proceso:
+        TiendaApp(root)
+    elif "Proceso 2" in proceso:
+        mostrar_formulario_sedes()
     else:
-        etiqueta_proceso = tk.Label(content_frame, text="Seleccione un proceso del menú", font=("Arial", 18), fg="black")
-        etiqueta_proceso.pack(pady=10)
+        messagebox.showinfo("Info", "Esta funcionalidad está en desarrollo.")
 
-# Función para mostrar el formulario de selección de sede
+# ===========================
+# FORMULARIO DE SELECCIÓN DE SEDE Y SERVICIOS
+# ===========================
+
 def mostrar_formulario_sedes():
-    for widget in content_frame.winfo_children():
-        widget.destroy()
-    
-    def seleccionar_sede():
-        sede = sede_var.get()
-        if sede in ["Sede Medellin", "Sede Bogota", "Sede Cali", "Sede Cartagena"]:
-            mostrar_formulario_servicios(sede)
-        else:
-            messagebox.showwarning("Selección Incorrecta", "Debe seleccionar una sede válida.")
-    
+    limpiar_frame(content_frame)
+
     sede_var = tk.StringVar()
-    etiqueta_sede = tk.Label(content_frame, text="Seleccione una sede:", font=("Arial", 18), fg="black")
-    etiqueta_sede.pack(pady=10)
+    servicio_var = tk.StringVar()
+    raza_var = tk.StringVar()
+    precio_var = tk.StringVar()
+
+    frame_sede = ttk.Frame(content_frame)
+    frame_sede.pack(pady=10)
+    ttk.Label(frame_sede, text="Seleccione una sede:", font=("Arial", 18)).pack(pady=10)
     
-    opciones_sedes = ["Sede Medellin", "Sede Bogota", "Sede Cali", "Sede Cartagena"]
-    menu_sedes = tk.OptionMenu(content_frame, sede_var, *opciones_sedes)
+    opciones_sedes = obtener_sedes()
+    print(f"Opciones de sedes: {opciones_sedes}")
+    menu_sedes = ttk.Combobox(frame_sede, textvariable=sede_var, values=opciones_sedes, state="readonly")
     menu_sedes.pack(pady=10)
     
-    boton_seleccionar_sede = tk.Button(content_frame, text="Seleccionar Sede", command=seleccionar_sede)
-    boton_seleccionar_sede.pack(pady=10)
+    ttk.Button(frame_sede, text="Seleccionar Sede", command=lambda: seleccionar_servicio(sede_var.get(), frame_sede, servicio_var, raza_var, precio_var)).pack(pady=10)
 
+def seleccionar_servicio(sede, frame_sede, servicio_var, raza_var, precio_var):
+    if sede not in obtener_sedes():
+        messagebox.showwarning("Error", "Seleccione una sede válida.")
+        return
+    
+    frame_servicio = ttk.Frame(content_frame)
+    frame_servicio.pack(pady=10)
+    ttk.Label(frame_servicio, text="Seleccione un servicio:", font=("Arial", 18)).pack(pady=10)
 
-
-# Función para mostrar el formulario de selección de servicios
-def mostrar_formulario_servicios(sede):
-    for widget in content_frame.winfo_children():
-        widget.destroy()
-    
-    def seleccionar_servicio():
-        servicio = servicio_var.get()
-        if servicio in ["Servicio 1", "Servicio 2"]:
-            mostrar_formulario_registro()
-        else:
-            messagebox.showwarning("Selección Incorrecta", "Debe seleccionar un servicio válido.")
-    
-    servicio_var = tk.StringVar()
-    etiqueta_servicio = tk.Label(content_frame, text=f"Servicios disponibles en {sede}:", font=("Arial", 18), fg="black")
-    etiqueta_servicio.pack(pady=10)
-    
-    if sede == "Sede Medellin":
-        opciones_servicios = ["Servicio 1: Entrenamiento", "Servicio 2: Veterinaria"]
-    elif sede == "Sede Bogota":
-        opciones_servicios = ["Servicio 1: Peluquería"]
-    elif sede == "Sede Cali":
-        opciones_servicios = ["Servicio 1: Veterinaria", "Servicio 2: Entrenamiento"]
-    elif sede == "Sede Cartagena":
-        opciones_servicios = ["Servicio 1: Entrenamiento"]
-    
-    menu_servicios = tk.OptionMenu(content_frame, servicio_var, *opciones_servicios)
+    opciones_servicios = obtener_servicios(sede)
+    print(f"Opciones de servicios para {sede}: {opciones_servicios}")
+    menu_servicios = ttk.Combobox(frame_servicio, textvariable=servicio_var, values=opciones_servicios, state="readonly")
     menu_servicios.pack(pady=10)
     
-    boton_seleccionar_servicio = tk.Button(content_frame, text="Seleccionar Servicio", command=seleccionar_servicio)
-    boton_seleccionar_servicio.pack(pady=10)
-
-# Función para mostrar el formulario de registro
-def mostrar_formulario_registro():
-    for widget in content_frame.winfo_children():
-        widget.destroy()
-    
-    def registrar():
-        nombre = entry_nombre.get()
-        edad = entry_edad.get()
-        cedula = entry_cedula.get()
-        if nombre and edad and cedula:
-            messagebox.showinfo("Registro Exitoso", f"Nombre: {nombre}, Edad: {edad}, Cédula: {cedula}")
-            mostrar_formulario_mascota()
+    def verificar_disponibilidad_action():
+        servicio = servicio_var.get()
+        print(f"Servicio seleccionado: {servicio}")
+        if servicio:
+            disponibilidad = verificar_disponibilidad(agendador, sede, servicio)
+            print(f"Disponibilidad para {servicio} en {sede}: {disponibilidad}")
+            if disponibilidad:
+                confirmar_raza(sede, servicio, frame_servicio, frame_sede, raza_var,servicio_var,precio_var)
+            else:
+                messagebox.showwarning("Sin disponibilidad", "No hay disponibilidad para el servicio seleccionado.")
         else:
-            messagebox.showwarning("Registro Incompleto", "Debe completar todos los campos.")
-    
-    etiqueta_nombre = tk.Label(content_frame, text="Nombre:", font=("Arial", 14))
-    etiqueta_nombre.grid(row=0, column=0, padx=5, pady=5)
-    entry_nombre = tk.Entry(content_frame, font=("Arial", 14))
-    entry_nombre.grid(row=0, column=1, padx=5, pady=5)
-    
-    etiqueta_edad = tk.Label(content_frame, text="Edad:", font=("Arial", 14))
-    etiqueta_edad.grid(row=1, column=0, padx=5, pady=5)
-    entry_edad = tk.Entry(content_frame, font=("Arial", 14))
-    entry_edad.grid(row=1, column=1, padx=5, pady=5)
-    
-    etiqueta_cedula = tk.Label(content_frame, text="Cédula:", font=("Arial", 14))
-    etiqueta_cedula.grid(row=2, column=0, padx=5, pady=5)
-    entry_cedula = tk.Entry(content_frame, font=("Arial", 14))
-    entry_cedula.grid(row=2, column=1, padx=5, pady=5)
-    
-    boton_registrar = tk.Button(content_frame, text="Registrar", command=registrar)
-    boton_registrar.grid(row=3, column=0, columnspan=2, pady=10)
+            messagebox.showwarning("Selección Incorrecta", "Debe seleccionar un servicio válido.")
 
-# Función para mostrar el formulario de la mascota
-def mostrar_formulario_mascota():
-    for widget in content_frame.winfo_children():
-        widget.destroy()
-    
-    def registrar_mascota():
-        nombre_mascota = entry_nombre_mascota.get()
-        edad_mascota = entry_edad_mascota.get()
-        especie_mascota = especie_var.get()
-        genero_mascota = genero_var.get()
-        if nombre_mascota and edad_mascota and especie_mascota and genero_mascota:
-            messagebox.showinfo("Registro Exitoso", f"Nombre: {nombre_mascota}, Edad: {edad_mascota}, Especie: {especie_mascota}, Género: {genero_mascota}")
-            mostrar_interfaz_principal("Proceso Completado")
+    ttk.Button(frame_servicio, text="Seleccionar Servicio", command=verificar_disponibilidad_action).pack(pady=10)
+    ttk.Button(frame_servicio, text="Cancelar", command=mostrar_formulario_sedes).pack(pady=10)
+
+# ===========================
+# CONFIRMAR RAZA
+# ===========================
+
+def confirmar_raza(sede, servicio, frame_servicio, frame_sede, servicio_var, raza_var, precio_var):
+    limpiar_frame(content_frame)
+
+    frame_raza = ttk.Frame(content_frame)
+    frame_raza.pack(expand=True, fill=tk.BOTH)
+    ttk.Label(frame_raza, text="Su mascota pertenece a:", font=("Arial", 18)).pack(pady=10)
+
+    if servicio == "Entrenamiento":
+        razas_disponibles = ["Perro", "Gato"]
+        precio = 100
+    elif servicio == "Peluquería":
+        razas_disponibles = ["Perro", "Gato"]
+        precio = 50
+    elif servicio == "Veterinaria":
+        razas_disponibles = ["Perro", "Gato", "Ave", "Conejo"]
+        precio = 70
+    else:
+        razas_disponibles = []
+        precio = 0
+
+    print(f"Razas disponibles para {servicio}: {razas_disponibles} con precio ${precio}")
+    menu_razas = ttk.Combobox(frame_raza, textvariable=raza_var, values=razas_disponibles, state="readonly")
+    menu_razas.pack(pady=10)
+
+    def confirmar_raza_action():
+        raza = raza_var.get()
+        print(f"Raza seleccionada: {raza}")
+        if raza in razas_disponibles:
+            precio_var.set(f"El precio del servicio de {servicio} es ${precio}.")
+            seleccionar_empleado(sede, servicio, frame_raza, raza_var, precio_var)
         else:
-            messagebox.showwarning("Registro Incompleto", "Debe completar todos los campos.")
-    
-    etiqueta_nombre_mascota = tk.Label(content_frame, text="Nombre de la Mascota:", font=("Arial", 14))
-    etiqueta_nombre_mascota.grid(row=0, column=0, padx=5, pady=5)
-    entry_nombre_mascota = tk.Entry(content_frame, font=("Arial", 14))
-    entry_nombre_mascota.grid(row=0, column=1, padx=5, pady=5)
-    
-    etiqueta_edad_mascota = tk.Label(content_frame, text="Edad de la Mascota (meses):", font=("Arial", 14))
-    etiqueta_edad_mascota.grid(row=1, column=0, padx=5, pady=5)
-    entry_edad_mascota = tk.Entry(content_frame, font=("Arial", 14))
-    entry_edad_mascota.grid(row=1, column=1, padx=5, pady=5)
-    
-    etiqueta_especie_mascota = tk.Label(content_frame, text="Especie de la Mascota:", font=("Arial", 14))
-    etiqueta_especie_mascota.grid(row=2, column=0, padx=5, pady=5)
-    especie_var = tk.StringVar()
-    opciones_especie = ["Perro", "Gato", "Conejo", "Hámster"]
-    menu_especie = tk.OptionMenu(content_frame, especie_var, *opciones_especie)
-    menu_especie.grid(row=2, column=1, padx=5, pady=5)
-    
-    etiqueta_genero_mascota = tk.Label(content_frame, text="Género de la Mascota:", font=("Arial", 14))
-    etiqueta_genero_mascota.grid(row=3, column=0, padx=5, pady=5)
-    genero_var = tk.StringVar()
-    opciones_genero = ["Macho", "Hembra"]
-    menu_genero = tk.OptionMenu(content_frame, genero_var, *opciones_genero)
-    menu_genero.grid(row=3, column=1, padx=5, pady=5)
-    
-    boton_registrar_mascota = tk.Button(content_frame, text="Registrar Mascota", command=registrar_mascota)
-    boton_registrar_mascota.grid(row=4, column=0, columnspan=2, pady=10)
+            messagebox.showwarning("Selección Incorrecta", "Debe seleccionar una raza válida.")
 
-# Ventana principal
+    ttk.Button(frame_raza, text="Confirmar Raza", command=confirmar_raza_action).pack(pady=10)
+    ttk.Button(frame_raza, text="Cancelar", command=lambda: seleccionar_servicio(sede, frame_servicio, servicio_var, raza_var, precio_var)).pack(pady=10)
+
+    ttk.Label(frame_raza, textvariable=precio_var, font=("Arial", 14)).pack(pady=10)
+
+# ===========================
+# SELECCIONAR EMPLEADO
+# ===========================
+
+def seleccionar_empleado(sede, servicio, frame_raza, raza_var, precio_var):
+    limpiar_frame(content_frame)
+
+    empleados_disponibles = obtener_empleados_disponibles(agendador, sede)
+    print(f"Empleados disponibles en {sede}: {empleados_disponibles}")
+    empleados_var = tk.StringVar(value=[empleado.nombre for empleado in empleados_disponibles])
+
+    frame_empleado = ttk.Frame(content_frame)
+    frame_empleado.pack(pady=10)
+    ttk.Label(frame_empleado, text="Seleccione un empleado:", font=("Arial", 18)).pack(pady=10)
+    
+    empleados_listbox = tk.Listbox(frame_empleado, listvariable=empleados_var, height=6, selectmode='single')
+    empleados_listbox.pack(pady=10)
+
+    def seleccionar_cupo():
+        seleccion = empleados_listbox.curselection()
+        if seleccion:
+            empleado = empleados_disponibles[seleccion[0]]
+            print(f"Empleado seleccionado: {empleado.nombre}")
+            seleccionar_cupo_dia(sede, servicio, empleado,frame_raza, frame_empleado, raza_var, precio_var)
+        else:
+            messagebox.showwarning("Selección Incorrecta", "Debe seleccionar un empleado válido.")
+
+    ttk.Button(frame_empleado, text="Seleccionar Empleado", command=seleccionar_cupo).pack(pady=10)
+    ttk.Button(frame_empleado, text="Cancelar", command=lambda: confirmar_raza(sede, servicio, frame_raza, raza_var, precio_var)).pack(pady=10)
+
+# ===========================
+# SELECCIONAR CUPO POR DÍA
+# ===========================
+
+def seleccionar_cupo_dia(sede, servicio, empleado, frame_raza, frame_empleado, raza_var, precio_var):
+    limpiar_frame(content_frame)
+
+    dia_var = tk.StringVar()
+    frame_cupo = ttk.Frame(content_frame)
+    frame_cupo.pack(pady=10)
+    ttk.Label(frame_cupo, text="Seleccione un día:", font=("Arial", 18)).pack(pady=10)
+    
+    opciones_dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
+    menu_dias = ttk.Combobox(frame_cupo, textvariable=dia_var, values=opciones_dias, state="readonly")
+    menu_dias.pack(pady=10)
+
+    def seleccionar_dia():
+        dia = dia_var.get()
+        print(f"Día seleccionado: {dia}")
+        dias_semana = {"Lunes": 0, "Martes": 1, "Miércoles": 2, "Jueves": 3, "Viernes": 4, "Sábado": 5}
+        dia_numero = dias_semana.get(dia)
+        if dia_numero is not None:
+            cupos_disponibles = empleado.cupos_disponibles(dia_numero)
+            print(f"Cupos disponibles para {dia}: {cupos_disponibles}")
+            if cupos_disponibles:
+                confirmar_cupo(sede, servicio, empleado, cupos_disponibles, frame_cupo, raza_var, precio_var)
+            else:
+                messagebox.showwarning("Sin disponibilidad", "No hay cupos disponibles para el día seleccionado.")
+        else:
+            messagebox.showwarning("Selección Incorrecta", "Debe seleccionar un día válido.")
+
+    ttk.Button(frame_cupo, text="Seleccionar Día", command=seleccionar_dia).pack(pady=10)
+    ttk.Button(frame_cupo, text="Cancelar", command=lambda: seleccionar_empleado(sede, servicio, frame_raza, raza_var, precio_var)).pack(pady=10)
+
+# ===========================
+# CONFIRMAR CUPO
+# ===========================
+
+def confirmar_cupo(sede, servicio, empleado, cupos_disponibles, frame_cupo, raza_var, precio_var):
+    limpiar_frame(content_frame)
+
+    cupos_var = tk.StringVar(value=[f"{cupo.get_dia()} {cupo.hora_inicio} - {cupo.hora_fin}" for cupo in cupos_disponibles])
+    frame_confirmar_cupo = ttk.Frame(content_frame)
+    frame_confirmar_cupo.pack(pady=10)
+    ttk.Label(frame_confirmar_cupo, text="Seleccione un cupo:", font=("Arial", 18)).pack(pady=10)
+
+    cupos_listbox = tk.Listbox(frame_confirmar_cupo, listvariable=cupos_var, height=6, selectmode='single')
+    cupos_listbox.pack(pady=10)
+
+    def confirmar_cupo_action():
+        seleccion = cupos_listbox.curselection()
+        if seleccion:
+            cupo = cupos_disponibles[seleccion[0]]
+            print(f"Cupo seleccionado: {cupo.get_dia()} {cupo.hora_inicio} - {cupo.hora_fin}")
+            ingresar_datos_cliente(sede, servicio, empleado, cupo, frame_confirmar_cupo, raza_var, precio_var)
+        else:
+            messagebox.showwarning("Selección Incorrecta", "Debe seleccionar un cupo válido.")
+
+    ttk.Button(frame_confirmar_cupo, text="Confirmar Cupo", command=confirmar_cupo_action).pack(pady=10)
+    ttk.Button(frame_confirmar_cupo, text="Cancelar", command=lambda: seleccionar_cupo_dia(sede, servicio, empleado, frame_cupo, raza_var, precio_var)).pack(pady=10)
+
+# ===========================
+# INGRESAR DATOS DEL CLIENTE
+# ===========================
+
+def ingresar_datos_cliente(sede, servicio, empleado, cupo, frame_confirmar_cupo, raza_var, precio_var):
+    limpiar_frame(content_frame)
+
+    global field_frame_cliente
+    
+    frame_cliente = ttk.Frame(content_frame)
+    frame_cliente.pack(pady=10)
+    ttk.Label(frame_cliente, text="Datos del Cliente", font=("Arial", 16)).pack(pady=10)
+    field_frame_cliente = FieldFrame(frame_cliente, "Criterio", ["Nombre", "Edad", "Cédula"], "Valor")
+    field_frame_cliente.pack(pady=10)
+
+    def confirmar_datos_cliente():
+        cliente_data = (
+            field_frame_cliente.getValue("Nombre"),
+            field_frame_cliente.getValue("Edad"),
+            field_frame_cliente.getValue("Cédula")
+        )
+        ingresar_datos_mascota(sede, servicio, empleado, cupo, cliente_data, frame_cliente, raza_var, precio_var)
+
+    ttk.Button(frame_cliente, text="Confirmar Datos", command=confirmar_datos_cliente).pack(pady=10)
+    ttk.Button(frame_cliente, text="Cancelar", command=lambda: confirmar_cupo(sede, servicio, empleado, [cupo], frame_confirmar_cupo, raza_var, precio_var)).pack(pady=10)
+
+# ===========================
+# INGRESAR DATOS DE LA MASCOTA
+# ===========================
+
+def ingresar_datos_mascota(sede, servicio, empleado, cupo, cliente_data, frame_cliente, raza_var, precio_var):
+    limpiar_frame(content_frame)
+
+    global field_frame_mascota
+    
+    frame_mascota = ttk.Frame(content_frame)
+    frame_mascota.pack(pady=10)
+    ttk.Label(frame_mascota, text="Datos de la Mascota", font=("Arial", 16)).pack(pady=10)
+    field_frame_mascota = FieldFrame(frame_mascota, "Criterio", ["Nombre de la Mascota", "Especie de la Mascota", "Edad de la Mascota (meses)", "Género de la Mascota"], "Valor")
+    field_frame_mascota.pack(pady=10)
+    field_frame_mascota.setValue("Especie de la Mascota", raza_var.get())
+    field_frame_mascota.disableEntry("Especie de la Mascota")
+
+    def confirmar_datos_mascota():
+        mascota_data = (
+            field_frame_mascota.getValue("Nombre de la Mascota"),
+            field_frame_mascota.getValue("Especie de la Mascota"),
+            field_frame_mascota.getValue("Edad de la Mascota (meses)"),
+            field_frame_mascota.getValue("Género de la Mascota")
+        )
+        confirmar_agendamiento(sede, servicio, empleado, cupo, cliente_data, mascota_data, frame_mascota)
+
+    ttk.Button(frame_mascota, text="Confirmar Datos", command=confirmar_datos_mascota).pack(pady=10)
+    ttk.Button(frame_mascota, text="Cancelar", command=lambda: ingresar_datos_cliente(sede, servicio, empleado, cupo, frame_cliente, raza_var, precio_var)).pack(pady=10)
+
+# ===========================
+# CONFIRMAR AGENDAMIENTO
+# ===========================
+
+def confirmar_agendamiento(sede, servicio, empleado, cupo, cliente_data, mascota_data, frame_mascota):
+    limpiar_frame(content_frame)
+    
+    resultado = agendar_servicio(agendador, sede, servicio, cliente_data, mascota_data, cupo.get_dia().weekday(), cupo.hora_inicio, empleado.nombre)
+    print(f"Resultado del agendamiento: {resultado}")
+    messagebox.showinfo("Resultado", resultado)
+    mostrar_interfaz_inicial()
+
+# ===========================
+# CLASE TIENDAAPP (PROCESO 1)
+# ===========================
+
+class TiendaApp:
+    def __init__(self, root):
+        self.root = root
+        self.mostrar_formulario_registro()
+
+    def mostrar_formulario_registro(self):
+        limpiar_frame(content_frame)
+
+        ttk.Label(content_frame, text="Ingrese su nombre:", font=("Arial", 14)).pack(pady=5)
+        self.nombre_entry = ttk.Entry(content_frame, font=("Arial", 12))
+        self.nombre_entry.pack(pady=5)
+        
+        ttk.Button(content_frame, text="Continuar", command=self.mostrar_seleccion_productos).pack(pady=10)
+    
+    def mostrar_seleccion_productos(self):
+        self.nombre_cliente = self.nombre_entry.get()
+        if not self.nombre_cliente:
+            messagebox.showwarning("Advertencia", "Por favor, ingrese su nombre.")
+            return
+        
+        limpiar_frame(content_frame)
+
+        ttk.Label(content_frame, text="Seleccione un producto:", font=("Arial", 14)).pack(pady=10)
+        self.producto_var = tk.StringVar()
+
+        for prod in cargar_productos():
+            ttk.Radiobutton(content_frame, text=f"{prod['nombre']} - ${prod['precio']}", variable=self.producto_var, value=prod['nombre']).pack()
+
+        ttk.Label(content_frame, text="Cantidad:", font=("Arial", 14)).pack(pady=5)
+        self.cantidad_entry = ttk.Entry(content_frame, font=("Arial", 12))
+        self.cantidad_entry.pack(pady=5)
+
+        ttk.Button(content_frame, text="Comprar", command=self.realizar_compra).pack(pady=10)
+
+    def realizar_compra(self):
+        producto_seleccionado = self.producto_var.get()
+        cantidad = self.cantidad_entry.get()
+
+        if not producto_seleccionado or not cantidad.isdigit() or int(cantidad) <= 0:
+            messagebox.showwarning("Advertencia", "Seleccione un producto y una cantidad válida.")
+            return
+        
+        cantidad = int(cantidad)
+        producto = next((p for p in cargar_productos() if p['nombre'] == producto_seleccionado), None)
+
+        if producto:
+            total = cantidad * producto['precio']
+            recibo = f"Cliente: {self.nombre_cliente}\nProducto: {producto['nombre']}\nCantidad: {cantidad}\nTotal: ${total}"
+            messagebox.showinfo("Recibo de compra", recibo)
+
+# ===========================
+# CARGA DE PRODUCTOS
+# ===========================
+
+def cargar_productos():
+    try:
+        with open("productos.json", "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+# ===========================
+# UTILIDADES
+# ===========================
+
+def limpiar_frame(frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
+
+# ===========================
+# CONFIGURACIÓN DE INTERFAZ
+# ===========================
+
 root = tk.Tk()
-root.title("Interfaz de Aplicación")
+root.title("Interfaz de Aplicación Mejorada")
 root.geometry("800x600")
-root.configure(bg="lightblue")
+root.configure(bg="#E3F2FD")
 
-# Marco principal (zona 0)
-main_frame = tk.Frame(root, bg="lightblue")
+style = ttk.Style()
+style.configure("TButton", font=("Arial", 12), padding=6)
+style.configure("TLabel", font=("Arial", 12))
+style.configure("TCombobox", padding=5)
+
+main_frame = ttk.Frame(root, padding=10)
 main_frame.pack(fill=tk.BOTH, expand=True)
 
-# Barra de menú (zona 1)
 menu_bar = tk.Menu(main_frame)
 
-# Menú Archivo
 archivo_menu = tk.Menu(menu_bar, tearoff=0)
 archivo_menu.add_command(label="Aplicación", command=mostrar_info_aplicacion)
 archivo_menu.add_separator()
 archivo_menu.add_command(label="Salir", command=salir_aplicacion)
 menu_bar.add_cascade(label="Archivo", menu=archivo_menu)
 
-# Menú Procesos y Consultas
 procesos_menu = tk.Menu(menu_bar, tearoff=0)
+procesos_menu.add_command(label="Tienda UNamascota", command=lambda: manejar_seleccion_proceso("Proceso 1"))
+procesos_menu.add_command(label="Agendar UNservicio", command=lambda: manejar_seleccion_proceso("Proceso 2"))
+menu_bar.add_cascade(label="Procesos", menu=procesos_menu)
 
-# Agregar procesos al menú Procesos y Consultas
-procesos = [
-    "Proceso 1: Descripción del proceso 1",
-    "Proceso 2: Descripción del proceso 2",
-    "Proceso 3: Descripción del proceso 3",
-    "Proceso 4: Descripción del proceso 4",
-    "Proceso 5: Descripción del proceso 5"
-]
-
-for proceso in procesos:
-    procesos_menu.add_command(label=proceso, command=lambda p=proceso: manejar_seleccion_proceso(p))
-    procesos_menu.add_separator()
-
-menu_bar.add_cascade(label="Procesos y Consultas", menu=procesos_menu)
-
-# Menú Ayuda
 ayuda_menu = tk.Menu(menu_bar, tearoff=0)
 ayuda_menu.add_command(label="Acerca de", command=mostrar_info_autores)
 menu_bar.add_cascade(label="Ayuda", menu=ayuda_menu)
 
-# Configuración de la barra de menú
 root.config(menu=menu_bar)
 
-# Marco de contenido (zona 2)
-content_frame = tk.Frame(main_frame, bg="white")
+content_frame = ttk.Frame(main_frame, padding=20, relief="ridge", borderwidth=2)
 content_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
-# Mostrar interfaz inicial
+# Inicializar agendador globalmente
+global agendador
+agendador = inicializar_agendador()
+
 mostrar_interfaz_inicial()
 
-# Ejecutar el bucle principal
 root.mainloop()

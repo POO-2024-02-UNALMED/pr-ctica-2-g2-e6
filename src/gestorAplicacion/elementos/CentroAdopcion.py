@@ -1,7 +1,7 @@
 from enum import Enum
 from .Mascota import Mascota
 from .Mascota import EstadoSalud
-
+from ..gestion.empleado import Empleado
 class Sedes(Enum):
     MEDELLIN = 1
     BOGOTA = 2
@@ -176,11 +176,4 @@ class CentroAdopcion:
         return clienteNuevo
     
     def tieneEmpleados(self):
-        disponibles = []
-
-        for empleado in self._veterinarios:
-            
-            if empleado.tieneCupos():
-                disponibles.append(empleado)
-
-        return disponibles
+        return [empleado for empleado in self._veterinarios if empleado.tiene_cupos()]

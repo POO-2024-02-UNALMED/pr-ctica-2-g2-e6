@@ -1,5 +1,5 @@
 from gestorAplicacion.elementos import Fallecido
-from gestorAplicacion.elementos import CentroAdopcion
+from gestorAplicacion.elementos.centroAdopcion import CentroAdopcion
 
 class Memorial:
     tumbas = []
