@@ -83,26 +83,30 @@ def crear_datos_iniciales():
     return centros_adopcion, productos
 
 
-def guardar_datos(centros_adopcion, productos, ruta_centros="src/baseDatos/temp/centros_adopcion.pkl", ruta_productos="src/baseDatos/temp/productos.pkl"):
+def guardar_datos_centros(centros_adopcion, ruta_centros="src/baseDatos/temp/centros_adopcion.pkl"):
     os.makedirs(os.path.dirname(ruta_centros), exist_ok=True)
     with open(ruta_centros, 'wb') as file:
         pickle.dump(centros_adopcion, file)
 
+def guardar_datos_productos(productos, ruta_productos="src/baseDatos/temp/productos.pkl"):
     os.makedirs(os.path.dirname(ruta_productos), exist_ok=True)
     with open(ruta_productos, 'wb') as file:
         pickle.dump(productos, file)
 
-def cargar_datos(ruta_centros="src/baseDatos/temp/centros_adopcion.pkl", ruta_productos="src/baseDatos/temp/productos.pkl"):
+def cargar_datos_centros(ruta_centros="src/baseDatos/temp/centros_adopcion.pkl"):
     centros_adopcion = None
-    productos = None
 
     if os.path.exists(ruta_centros):
         with open(ruta_centros, 'rb') as file:
             centros_adopcion = pickle.load(file)
+    return centros_adopcion
+
+def cargar_datos_productos(ruta_productos="src/baseDatos/temp/productos.pkl"):
+    productos = None
 
     if os.path.exists(ruta_productos):
         with open(ruta_productos, 'rb') as file:
             productos = pickle.load(file)
 
-    return centros_adopcion, productos
+    return productos
 

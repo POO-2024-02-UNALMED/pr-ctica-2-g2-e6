@@ -14,7 +14,7 @@ from src.gestorAplicacion.elementos.estado_Salud import EstadoSalud
 from src.gestorAplicacion.gestion.Memorial import Memorial
 from src.gestorAplicacion.elementos.Fallecido import Fallecido
 from tkinter import messagebox
-from src.baseDatos.serializador import cargar_datos
+from src.baseDatos.serializador import cargar_datos_centros, cargar_datos_productos
 
 if __name__ == "__main__":
     from src.uiMain import InitialWin
@@ -80,7 +80,7 @@ def planificacionDieta():
     # Mini tienda de productos dietéticos
     tipoDietaBarf = f"Dieta Barf para {especie}s"
 
-    tienda = Tienda(empleado.Empleado("Albert", 22, 555, 1323, "West Elm", "Vendedor"))
+    tienda = Tienda(Empleado("Albert", 22, 555, 1323, "West Elm", "Vendedor"))
     productosBarf = [
         Producto(f"Dieta Barf Alta en Proteínas para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000),
         Producto(f"Dieta Barf Alta en Grasas para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000),
@@ -115,7 +115,7 @@ def planificacionDieta():
 ##================================================================================================
 def inicializar_agendador():
     # Cargar datos iniciales desde el archivo
-    centros_adopcion = cargar_datos()
+    centros_adopcion = cargar_datos_centros()
     if centros_adopcion is None:
         raise Exception("No se pudieron cargar los datos iniciales.")
 
