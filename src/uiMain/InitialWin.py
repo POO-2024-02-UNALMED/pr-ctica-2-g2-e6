@@ -23,8 +23,10 @@ window.img_width = 240
 window.img_height = 180
 
 #Definicion de funciones
-def mostrar_ventana_principal():
-    window
+def ingresar_sistema():
+    window.withdraw()
+    import MainWin
+    MainWin.mostrar_ventana_principal(window)
 
 def load_images_from_folder(folder_path):
     image_files = sorted(glob.glob(os.path.join(folder_path, "*.png")))

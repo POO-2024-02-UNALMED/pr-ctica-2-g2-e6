@@ -1,9 +1,4 @@
-from enum import Enum
-
-class EstadoSalud(Enum):
-    SANO = "SANO"
-    ENFERMO = "ENFERMO"
-    ENTRATAMIENTO = "EN TRATAMIENTO"
+from .estado_Salud import EstadoSalud
 
 #Inicializador de la clase
 
