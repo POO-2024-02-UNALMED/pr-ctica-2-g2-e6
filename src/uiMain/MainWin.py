@@ -3,7 +3,7 @@ from FieldFrame import FieldFrame
 from tkinter import ttk, messagebox
 import json
 # Importaciones corregidas
-from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad,CentroAdopcion,Mascota,Cliente,Dieta, EstadoSalud
+from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad, CentroAdopcion, Mascota, Cliente, Dieta, EstadoSalud
 
 # ===========================
 # FUNCIONES GENERALES
@@ -46,7 +46,7 @@ def manejar_seleccion_proceso(proceso):
     etiqueta_proceso.pack(pady=10)
 
     if "Proceso 1" in proceso:
-        TiendaApp(root)
+        inicio_tienda()
     elif "Proceso 2" in proceso:
         mostrar_formulario_sedes()
     elif "Proceso 3" in proceso:
@@ -315,55 +315,173 @@ def confirmar_agendamiento(sede, servicio, empleado, cupo, cliente_data, mascota
 # CLASE TIENDAAPP (PROCESO 1)
 # ===========================
 
-class TiendaApp:
-    def __init__(self, root):
-        self.root = root
-        self.mostrar_formulario_registro()
+def inicio_tienda():
+    limpiar_frame(content_frame)
 
-    def mostrar_formulario_registro(self):
+    # Initial options for the user
+    ttk.Label(content_frame, text="Bienvenido a la Tienda", font=("Arial", 18)).pack(pady=20)
+    ttk.Label(content_frame, text="Seleccione una opción:", font=("Arial", 14)).pack(pady=10)
+
+    def comprar():
         limpiar_frame(content_frame)
+        ttk.Label(content_frame, text="¿Cómo le gustaría mostrar los productos?", font=("Arial", 14)).pack(pady=10)
 
-        ttk.Label(content_frame, text="Ingrese su nombre:", font=("Arial", 14)).pack(pady=5)
-        self.nombre_entry = ttk.Entry(content_frame, font=("Arial", 12))
-        self.nombre_entry.pack(pady=5)
-        
-        ttk.Button(content_frame, text="Continuar", command=self.mostrar_seleccion_productos).pack(pady=10)
-    
-    def mostrar_seleccion_productos(self):
-        self.nombre_cliente = self.nombre_entry.get()
-        if not self.nombre_cliente:
-            messagebox.showwarning("Advertencia", "Por favor, ingrese su nombre.")
+        def mostrar_todo():
+            limpiar_frame(content_frame)
+            productos = cargar_productos()
+
+            if not productos:
+                messagebox.showinfo("Info", "No hay productos disponibles.")
+                return
+
+            # Display products in a Combobox
+            ttk.Label(content_frame, text="Seleccione un producto:", font=("Arial", 14)).pack(pady=10)
+            producto_var = tk.StringVar()
+            productos_combobox = ttk.Combobox(
+                content_frame,
+                textvariable=producto_var,
+                values=[f"{p['nombre']} - ${p['precio']} ({p['tipo_animal']})" for p in productos],
+                state="readonly"
+            )
+            productos_combobox.pack(pady=10)
+
+            ttk.Label(content_frame, text="Cantidad de unidades:", font=("Arial", 14)).pack(pady=10)
+            cantidad_var = tk.IntVar()
+            cantidad_entry = ttk.Entry(content_frame, textvariable=cantidad_var)
+            cantidad_entry.pack(pady=10)
+
+            def confirmar_compra():
+                producto_seleccionado = producto_var.get()
+                cantidad = cantidad_var.get()
+
+                if not producto_seleccionado or cantidad <= 0:
+                    messagebox.showwarning("Error", "Seleccione un producto y una cantidad válida.")
+                    return
+
+                # Extract product name from the Combobox value
+                nombre_producto = producto_seleccionado.split(" - ")[0]
+                producto = next((p for p in productos if p["nombre"] == nombre_producto), None)
+
+                if producto:
+                    ingresar_datos_cliente(producto, cantidad)
+                else:
+                    messagebox.showwarning("Error", "Producto no encontrado.")
+
+            ttk.Button(content_frame, text="Confirmar Compra", command=confirmar_compra).pack(pady=10)
+            ttk.Button(content_frame, text="Cancelar", command=inicio_tienda).pack(pady=10)
+
+        def filtrar_por_tipo():
+            limpiar_frame(content_frame)
+            ttk.Label(content_frame, text="Seleccione el tipo de animal:", font=("Arial", 14)).pack(pady=10)
+
+            tipo_animal_var = tk.StringVar()
+            tipos_animal = ["Perro", "Gato", "Conejo", "Ave"]
+            tipo_combobox = ttk.Combobox(content_frame, textvariable=tipo_animal_var, values=tipos_animal, state="readonly")
+            tipo_combobox.pack(pady=10)
+
+            def mostrar_productos_filtrados():
+                tipo_animal = tipo_animal_var.get()
+                if not tipo_animal:
+                    messagebox.showwarning("Error", "Seleccione un tipo de animal válido.")
+                    return
+
+                productos = cargar_productos()
+                productos_filtrados = [p for p in productos if p["tipo_animal"] == tipo_animal]
+
+                if not productos_filtrados:
+                    messagebox.showinfo("Info", f"No hay productos disponibles para {tipo_animal}.")
+                    return
+
+                limpiar_frame(content_frame)
+                ttk.Label(content_frame, text="Seleccione un producto:", font=("Arial", 14)).pack(pady=10)
+                producto_var = tk.StringVar()
+                productos_combobox = ttk.Combobox(
+                    content_frame,
+                    textvariable=producto_var,
+                    values=[f"{p['nombre']} - ${p['precio']}" for p in productos_filtrados],
+                    state="readonly"
+                )
+                productos_combobox.pack(pady=10)
+
+                ttk.Label(content_frame, text="Cantidad de unidades:", font=("Arial", 14)).pack(pady=10)
+                cantidad_var = tk.IntVar()
+                cantidad_entry = ttk.Entry(content_frame, textvariable=cantidad_var)
+                cantidad_entry.pack(pady=10)
+
+                def confirmar_compra():
+                    producto_seleccionado = producto_var.get()
+                    cantidad = cantidad_var.get()
+
+                    if not producto_seleccionado or cantidad <= 0:
+                        messagebox.showwarning("Error", "Seleccione un producto y una cantidad válida.")
+                        return
+
+                    nombre_producto = producto_seleccionado.split(" - ")[0]
+                    producto = next((p for p in productos_filtrados if p["nombre"] == nombre_producto), None)
+
+                    if producto:
+                        ingresar_datos_cliente(producto, cantidad)
+                    else:
+                        messagebox.showwarning("Error", "Producto no encontrado.")
+
+                ttk.Button(content_frame, text="Confirmar Compra", command=confirmar_compra).pack(pady=10)
+                ttk.Button(content_frame, text="Cancelar", command=filtrar_por_tipo).pack(pady=10)
+
+            ttk.Button(content_frame, text="Mostrar Productos", command=mostrar_productos_filtrados).pack(pady=10)
+            ttk.Button(content_frame, text="Cancelar", command=inicio_tienda).pack(pady=10)
+
+        ttk.Button(content_frame, text="Mostrar Todo", command=mostrar_todo).pack(pady=10)
+        ttk.Button(content_frame, text="Filtrar por Tipo", command=filtrar_por_tipo).pack(pady=10)
+        ttk.Button(content_frame, text="Cancelar", command=inicio_tienda).pack(pady=10)
+
+    ttk.Button(content_frame, text="Comprar", command=comprar).pack(pady=10)
+    ttk.Button(content_frame, text="Salir", command=root.quit).pack(pady=10)
+
+def ingresar_datos_cliente(producto, cantidad):
+    limpiar_frame(content_frame)
+
+    ttk.Label(content_frame, text="Ingrese sus datos:", font=("Arial", 14)).pack(pady=10)
+
+    ttk.Label(content_frame, text="Nombre:", font=("Arial", 12)).pack(pady=5)
+    nombre_entry = ttk.Entry(content_frame)
+    nombre_entry.pack(pady=5)
+
+    ttk.Label(content_frame, text="Cédula:", font=("Arial", 12)).pack(pady=5)
+    cedula_entry = ttk.Entry(content_frame)
+    cedula_entry.pack(pady=5)
+
+    def finalizar_compra():
+        nombre = nombre_entry.get()
+        cedula = cedula_entry.get()
+
+        if not nombre or not cedula:
+            messagebox.showwarning("Error", "Por favor complete todos los campos.")
             return
-        
-        limpiar_frame(content_frame)
 
-        ttk.Label(content_frame, text="Seleccione un producto:", font=("Arial", 14)).pack(pady=10)
-        self.producto_var = tk.StringVar()
+        total = producto["precio"] * cantidad
+        recibo = f"""
+        Recibo de Compra:
+        Producto: {producto["nombre"]}
+        Cantidad: {cantidad}
+        Precio Unitario: ${producto["precio"]}
+        Total: ${total}
 
-        for prod in cargar_productos():
-            ttk.Radiobutton(content_frame, text=f"{prod['nombre']} - ${prod['precio']}", variable=self.producto_var, value=prod['nombre']).pack()
+        Datos del Cliente:
+        Nombre: {nombre}
+        Cédula: {cedula}
+        """
+        messagebox.showinfo("Compra Exitosa", recibo)
+        mostrar_interfaz_inicial(content_frame)
 
-        ttk.Label(content_frame, text="Cantidad:", font=("Arial", 14)).pack(pady=5)
-        self.cantidad_entry = ttk.Entry(content_frame, font=("Arial", 12))
-        self.cantidad_entry.pack(pady=5)
+    ttk.Button(content_frame, text="Finalizar Compra", command=finalizar_compra).pack(pady=10)
+    ttk.Button(content_frame, text="Cancelar", command=inicio_tienda).pack(pady=10)
 
-        ttk.Button(content_frame, text="Comprar", command=self.realizar_compra).pack(pady=10)
-
-    def realizar_compra(self):
-        producto_seleccionado = self.producto_var.get()
-        cantidad = self.cantidad_entry.get()
-
-        if not producto_seleccionado or not cantidad.isdigit() or int(cantidad) <= 0:
-            messagebox.showwarning("Advertencia", "Seleccione un producto y una cantidad válida.")
-            return
-        
-        cantidad = int(cantidad)
-        producto = next((p for p in cargar_productos() if p['nombre'] == producto_seleccionado), None)
-
-        if producto:
-            total = cantidad * producto['precio']
-            recibo = f"Cliente: {self.nombre_cliente}\nProducto: {producto['nombre']}\nCantidad: {cantidad}\nTotal: ${total}"
-            messagebox.showinfo("Recibo de compra", recibo)
+def cargar_productos():
+    try:
+        with open("productos.json", "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
 
 #Emergencia Veterinaria
 #--------------------------------------------------------------------------
