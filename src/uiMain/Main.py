@@ -11,9 +11,11 @@ from src.gestorAplicacion.elementos.CentroAdopcion import CentroAdopcion
 from src.gestorAplicacion.elementos.Producto import Producto
 from src.gestorAplicacion.gestion.Cupo import Cupo
 from src.gestorAplicacion.elementos.estado_Salud import EstadoSalud
-from src.uiMain import InitialWin
 from tkinter import messagebox
 from src.baseDatos.serializador import cargar_datos
+
+if __name__ == "__main__":
+    from src.uiMain import InitialWin
 
 ##================================================================================================
 ##PLANIFICAR UNADIETA
