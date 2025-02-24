@@ -200,23 +200,29 @@ def mostrar_formulario_mascota():
 #Emergencia Veterinaria
 #--------------------------------------------------------------------------
 def emergencia():
+
+    cemtro = CentroAdopcion("POO")
+
     for widget in content_frame.winfo_children():
         widget.destroy()
 
-    etiqueta_info = tk.Label(content_frame, text="Ingrese sus datos", font=("Arial", 14))
+    bienvenida = tk.Label(content_frame, text="Bienvenido a Emergencia Veterinaria", font=("Arial", 14), background="white")
+    bienvenida.pack(pady=5)
+
+    etiqueta_info = tk.Label(content_frame, text="Ingrese sus datos", font=("Arial", 14), background="white")
     etiqueta_info.pack(pady=5)
 
-    etiqueta_nombre = tk.Label(content_frame, text="Nombre:", font=("Arial", 14))
+    etiqueta_nombre = tk.Label(content_frame, text="Nombre:", font=("Arial", 14), background="white")
     etiqueta_nombre.pack(pady=5)
     entry_nombre = tk.Entry(content_frame)
     entry_nombre.pack(pady=5)
 
-    etiqueta_edad = tk.Label(content_frame, text="Edad:", font=("Arial", 14))
+    etiqueta_edad = tk.Label(content_frame, text="Edad:", font=("Arial", 14), background="white")
     etiqueta_edad.pack(pady=5)
     entry_edad = tk.Entry(content_frame)
     entry_edad.pack(pady=5)
 
-    etiqueta_cedula = tk.Label(content_frame, text="Cédula:", font=("Arial", 14))
+    etiqueta_cedula = tk.Label(content_frame, text="Cédula:", font=("Arial", 14), background="white")
     etiqueta_cedula.pack(pady=5)
     entry_cedula = tk.Entry(content_frame)
     entry_cedula.pack(pady=5)
@@ -228,46 +234,46 @@ def emergencia():
             for widget in content_frame.winfo_children():
                 widget.destroy()
 
-            etiqueta_info_2 = tk.Label(content_frame, text="Ingrese los datos de su mascota:", font=("Arial", 14))
+            etiqueta_info_2 = tk.Label(content_frame, text="Ingrese los datos de su mascota:", font=("Arial", 14), background="white")
             etiqueta_info_2.pack(pady=5)
 
-            etiqueta_nombre_mascota = tk.Label(content_frame, text="Nombre:", font=("Arial", 14))
+            etiqueta_nombre_mascota = tk.Label(content_frame, text="Nombre:", font=("Arial", 14), background="white")
             etiqueta_nombre_mascota.pack()
             entry_nombre_mascota = tk.Entry(content_frame)
             entry_nombre_mascota.pack(pady=5)
 
-            etiqueta_especie = tk.Label(content_frame, text="Especie", font=("Arial", 14))
+            etiqueta_especie = tk.Label(content_frame, text="Especie", font=("Arial", 14), background="white")
             etiqueta_especie.pack(pady=5)
             especie_var = tk.StringVar()
             opciones_especie = ["Perro", "Gato"]
             menu_especie = tk.OptionMenu(content_frame, especie_var, *opciones_especie)
             menu_especie.pack(pady=5)
 
-            etiqueta_edad_mascota = tk.Label(content_frame, text="Edad (Años):", font=("Arial", 14))
+            etiqueta_edad_mascota = tk.Label(content_frame, text="Edad (Años):", font=("Arial", 14), background="white")
             etiqueta_edad_mascota.pack()
             entry_edad_mascota = tk.Entry(content_frame)
             entry_edad_mascota.pack(pady=5)
 
-            etiqueta_sexo = tk.Label(content_frame, text="Sexo", font=("Arial", 14))
+            etiqueta_sexo = tk.Label(content_frame, text="Sexo", font=("Arial", 14), background="white")
             etiqueta_sexo.pack(pady=5)
             sexo_var = tk.StringVar()
             opciones_sexo = ["Macho", "Hembra"]
             menu_sexo = tk.OptionMenu(content_frame, sexo_var, *opciones_sexo)
             menu_sexo.pack(pady=5)
 
-            etiqueta_tamaño = tk.Label(content_frame, text="Tamaño", font=("Arial", 14))
+            etiqueta_tamaño = tk.Label(content_frame, text="Tamaño", font=("Arial", 14), background="white")
             etiqueta_tamaño.pack(pady=5)
             tamaño_var = tk.StringVar()
             opciones_tamaño = ["Miniatura", "Pequeño", "Mediano", "Grande"]
             menu_tamaño = tk.OptionMenu(content_frame, tamaño_var, *opciones_tamaño)
             menu_tamaño.pack(pady=5)
 
-            etiqueta_peso = tk.Label(content_frame, text="Peso en kg:", font=("Arial", 14))
+            etiqueta_peso = tk.Label(content_frame, text="Peso en kg:", font=("Arial", 14), background="white")
             etiqueta_peso.pack()
             entry_peso = tk.Entry(content_frame)
             entry_peso.pack(pady=5)
 
-            etiqueta_sintomas = tk.Label(content_frame, text="Síntomas:", font=("Arial", 14))
+            etiqueta_sintomas = tk.Label(content_frame, text="Síntomas:", font=("Arial", 14), background="white")
             etiqueta_sintomas.pack()
             entry_sintomas = tk.Entry(content_frame)
             entry_sintomas.pack(pady=5)
@@ -279,6 +285,40 @@ def emergencia():
                     #print(lista_sintomas)
                     for widget in content_frame.winfo_children():
                         widget.destroy()
+
+                    centro = CentroAdopcion("Poo")
+                    #centro.agregarVeterinario(Empleado("Juana", 27, 10975685, 1765476, "allá", "VETERINARIO"))
+                    
+                    etiqueta_sedes = tk.Label(content_frame, text="¿En dónde desea que su masconta sea atendida?", font=("Arial", 14), background="white")
+                    etiqueta_sedes.pack(pady=5)
+                    sedes_var = tk.StringVar()
+                    sedes = centro.mostrarSedes()
+                    menu_sedes = tk.OptionMenu(content_frame, sedes_var, *sedes)
+                    menu_sedes.pack(pady=5)
+
+                    
+
+                    def continuar_3():
+                        #nombre_sede = sedes_var.get()
+                        #print(nombre_sede)
+                        for widget in content_frame.winfo_children():
+                            widget.destroy()
+
+                        centro.setSede(sedes_var.get())
+                        #print(centro.getSede())
+
+                        '''if centro.verificarHospitalizacion(mascota, lista_sintomas, centro):
+                            etiqueta_hosp = tk.Label(content_frame, "Su mascota puede ser hospitalizada.", font=("Arial", 14), background="white")
+                            etiqueta_hosp.pack(pady=5)
+                        else:
+                            etiqueta_hosp = tk.Label(content_frame, text="No", font=("Arial", 14), background="white")
+                            etiqueta_hosp.pack(pady=5)'''
+
+                        
+
+                    boton_continuar_2 = tk.Button(content_frame, text="Continuar", command=continuar_3)
+                    boton_continuar_2.pack(pady=5)
+
 
                 try:
                     lista_sintomas = entry_sintomas.get().split(" ")
@@ -296,7 +336,7 @@ def emergencia():
                     edad_mascota = int(entry_edad_mascota.get())
                     peso = float(entry_peso.get())
 
-                    if not nombre_cliente or not edad_cliente or not cedula_cliente:
+                    if not nombre_mascota or not especie or not sexo or not tamaño or not edad_mascota or not peso or not lista_sintomas:
                         messagebox.showwarning("Error", "Por favor ingrese valores válidos.")
                         return
 
@@ -476,7 +516,7 @@ procesos_menu = tk.Menu(menu_bar, tearoff=0)
 procesos = [
     "Proceso 1: Descripción del proceso 1",
     "Proceso 2: Descripción del proceso 2",
-    "Proceso 3: Descripción del proceso 3",
+    "Proceso 3: Emergencia Veterinaria",
     "Proceso 4: Descripción del proceso 4",
     "Proceso 5: Planificacion de Dietas"
 ]
