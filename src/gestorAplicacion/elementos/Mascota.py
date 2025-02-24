@@ -64,7 +64,7 @@ class Mascota:
     
     def getTamanoStr(self):
         tamanoStr = ""
-        if self.tamaño == 1:
+        if self.tamano == 1:
             tamanoStr = "Miniatura"
         elif self.tamano == 2:
             tamanoStr = "Pequeño"

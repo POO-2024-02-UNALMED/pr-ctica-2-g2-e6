@@ -10,9 +10,14 @@ from src.gestorAplicacion.elementos import Cliente
 from src.gestorAplicacion.elementos.centroAdopcion import CentroAdopcion
 from src.gestorAplicacion.elementos import Producto
 from src.gestorAplicacion.gestion import Cupo
+from src.gestorAplicacion.elementos.estado_Salud import EstadoSalud
 from src.uiMain import InitialWin
 from tkinter import messagebox
 from src.baseDatos.serializador import cargar_datos
+
+##================================================================================================
+##PLANIFICAR UNADIETA
+##================================================================================================
 def planificacionDieta():
     cliente = Cliente.registro()
 
@@ -55,7 +60,7 @@ def planificacionDieta():
     peso = int(input("Peso en kg: "))
 
     # Crear objeto Mascota
-    mascota = Mascota(nombre, especie, edad, sexo, estadoSalud.SANO, tamano, peso)
+    mascota = Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
 
     # Crear y calcular dieta
     dieta = Dieta(mascota)
@@ -71,7 +76,7 @@ def planificacionDieta():
     # Mini tienda de productos dietéticos
     tipoDietaBarf = f"Dieta Barf para {especie}s"
 
-    tienda = Tienda(Empleado("Albert", 22, 555, 1323, "West Elm", "Vendedor"))
+    tienda = Tienda(empleado.Empleado("Albert", 22, 555, 1323, "West Elm", "Vendedor"))
     productosBarf = [
         Producto(f"Dieta Barf Alta en Proteínas para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000),
         Producto(f"Dieta Barf Alta en Grasas para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000),
@@ -101,7 +106,9 @@ def planificacionDieta():
             print("ingresa un valor valido (si/no)")
             return
 
-##------------------------------------------------------------------------------------------------------------------------------------------##
+##================================================================================================
+##AGENDAR UNSERVICIO
+##================================================================================================
 def inicializar_agendador():
     # Cargar datos iniciales desde el archivo
     centros_adopcion = cargar_datos()
@@ -117,7 +124,7 @@ def inicializar_agendador():
 
 def agendar_servicio(agendador, sede, servicio, cliente_data, mascota_data, dia, hora, empleado_nombre):
     cliente = Cliente(*cliente_data)
-    mascota = Mascota(*mascota_data)
+    mascota = Mascota.Mascota(*mascota_data)
     agendador['cliente'] = cliente
     agendador['mascota'] = mascota
 
@@ -161,6 +168,9 @@ def obtener_empleados_disponibles(agendador, sede):
     centro = agendador['centros_adopcion'][sede]
     return centro.tieneEmpleados()
 
+##================================================================================================
+##UNAEMERGENCIA
+##================================================================================================
 def emergenciaVeterinaria():
 
     cliente = Cliente.registro()

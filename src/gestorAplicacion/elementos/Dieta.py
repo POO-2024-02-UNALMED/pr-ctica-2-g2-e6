@@ -1,4 +1,8 @@
 import json
+import sys
+import os
+# Añade el directorio raíz del proyecto al PYTHONPATH
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 class Dieta:
     def __init__(self, mascota):
@@ -48,10 +52,20 @@ class Dieta:
             3: "Debe bajar de peso."
         }.get(self.comparacionPeso(), "Estado no definido.")
 
+        tamanoStr = ""
+        if self.mascota.tamano == 1:
+            tamanoStr = "Miniatura"
+        elif self.mascota.tamano == 2:
+            tamanoStr = "Pequeño"
+        elif self.mascota.tamano == 4:
+            tamanoStr = "Grande"
+        else:
+            tamanoStr = "Mediano"
+
         return (f"Nombre de la mascota: {self.mascota.nombre}\n"
                 f"Peso Actual: {self.mascota.peso} kg\n"
                 f"Edad: {self.mascota.edad} años\n"
-                f"Tamaño: {self.mascota.getTamanoStr}\n"
+                f"Tamaño: {tamanoStr}\n"
                 f"Peso ideal: {round(self.pesoIdeal, 2)} kg\n"
                 f"Cantidad de Gramos de alimento diarios: {round(self.gramosDiarios, 2)} g\n"
                 f"{estadoPeso}\n\n"
@@ -66,7 +80,8 @@ class Dieta:
 
     def menu(self):
         try:
-            ruta = f"./src/src/basedatos/dieta_{self.mascota.nombre}.txt"
+            ruta = os.path.join(os.path.dirname(__file__), "../../basedatos", f"dieta_{self.mascota.nombre}.txt")
+            ruta = os.path.abspath(ruta)
             with open(ruta, "w", encoding="utf-8") as archivo:
                 archivo.write(str(self))
             print(f"Archivo de dieta guardado con éxito en basedatos/dieta.")
