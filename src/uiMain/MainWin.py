@@ -5,10 +5,10 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from src.gestorAplicacion.elementos.Dieta import Dieta
 from src.gestorAplicacion.gestion.Empleado import Empleado
-from src.gestorAplicacion.elementos.Mascota import Mascota
+from src.gestorAplicacion.elementos.Mascota import Mascota, EstadoSalud
 from src.gestorAplicacion.gestion.Tienda import Tienda
 from src.gestorAplicacion.elementos.Cliente import Cliente
-from src.gestorAplicacion.elementos.CentroAdopcion import CentroAdopcion
+from src.gestorAplicacion.elementos.CentroAdopcion import CentroAdopcion, Sedes
 from tkinter import messagebox, simpledialog
 
 # Función para mostrar información de la aplicación
@@ -55,7 +55,9 @@ def mostrar_interfaz_principal(proceso_seleccionado=None):
         
         if proceso_seleccionado.startswith("Proceso 2"):
             mostrar_formulario_sedes()
-        elif proceso_seleccionado.startswith("Proceso 3") or proceso_seleccionado.startswith("Proceso 4"):
+        elif proceso_seleccionado.startswith("Proceso 3"):
+            emergencia()
+        elif proceso_seleccionado.startswith("Proceso 4"):
             mostrar_formulario_registro()
         elif proceso.startswith("Proceso 5"):
             mostrar_formulario_dietas()
@@ -194,6 +196,156 @@ def mostrar_formulario_mascota():
     
     boton_registrar_mascota = tk.Button(content_frame, text="Registrar Mascota", command=registrar_mascota)
     boton_registrar_mascota.grid(row=4, column=0, columnspan=2, pady=10)
+
+#Emergencia Veterinaria
+#--------------------------------------------------------------------------
+def emergencia():
+    for widget in content_frame.winfo_children():
+        widget.destroy()
+
+    etiqueta_info = tk.Label(content_frame, text="Ingrese sus datos", font=("Arial", 14))
+    etiqueta_info.pack(pady=5)
+
+    etiqueta_nombre = tk.Label(content_frame, text="Nombre:", font=("Arial", 14))
+    etiqueta_nombre.pack(pady=5)
+    entry_nombre = tk.Entry(content_frame)
+    entry_nombre.pack(pady=5)
+
+    etiqueta_edad = tk.Label(content_frame, text="Edad:", font=("Arial", 14))
+    etiqueta_edad.pack(pady=5)
+    entry_edad = tk.Entry(content_frame)
+    entry_edad.pack(pady=5)
+
+    etiqueta_cedula = tk.Label(content_frame, text="Cédula:", font=("Arial", 14))
+    etiqueta_cedula.pack(pady=5)
+    entry_cedula = tk.Entry(content_frame)
+    entry_cedula.pack(pady=5)
+
+    def registrar():
+
+        def continuar():
+            #print(cliente)
+            for widget in content_frame.winfo_children():
+                widget.destroy()
+
+            etiqueta_info_2 = tk.Label(content_frame, text="Ingrese los datos de su mascota:", font=("Arial", 14))
+            etiqueta_info_2.pack(pady=5)
+
+            etiqueta_nombre_mascota = tk.Label(content_frame, text="Nombre:", font=("Arial", 14))
+            etiqueta_nombre_mascota.pack()
+            entry_nombre_mascota = tk.Entry(content_frame)
+            entry_nombre_mascota.pack(pady=5)
+
+            etiqueta_especie = tk.Label(content_frame, text="Especie", font=("Arial", 14))
+            etiqueta_especie.pack(pady=5)
+            especie_var = tk.StringVar()
+            opciones_especie = ["Perro", "Gato"]
+            menu_especie = tk.OptionMenu(content_frame, especie_var, *opciones_especie)
+            menu_especie.pack(pady=5)
+
+            etiqueta_edad_mascota = tk.Label(content_frame, text="Edad (Años):", font=("Arial", 14))
+            etiqueta_edad_mascota.pack()
+            entry_edad_mascota = tk.Entry(content_frame)
+            entry_edad_mascota.pack(pady=5)
+
+            etiqueta_sexo = tk.Label(content_frame, text="Sexo", font=("Arial", 14))
+            etiqueta_sexo.pack(pady=5)
+            sexo_var = tk.StringVar()
+            opciones_sexo = ["Macho", "Hembra"]
+            menu_sexo = tk.OptionMenu(content_frame, sexo_var, *opciones_sexo)
+            menu_sexo.pack(pady=5)
+
+            etiqueta_tamaño = tk.Label(content_frame, text="Tamaño", font=("Arial", 14))
+            etiqueta_tamaño.pack(pady=5)
+            tamaño_var = tk.StringVar()
+            opciones_tamaño = ["Miniatura", "Pequeño", "Mediano", "Grande"]
+            menu_tamaño = tk.OptionMenu(content_frame, tamaño_var, *opciones_tamaño)
+            menu_tamaño.pack(pady=5)
+
+            etiqueta_peso = tk.Label(content_frame, text="Peso en kg:", font=("Arial", 14))
+            etiqueta_peso.pack()
+            entry_peso = tk.Entry(content_frame)
+            entry_peso.pack(pady=5)
+
+            etiqueta_sintomas = tk.Label(content_frame, text="Síntomas:", font=("Arial", 14))
+            etiqueta_sintomas.pack()
+            entry_sintomas = tk.Entry(content_frame)
+            entry_sintomas.pack(pady=5)
+
+            def registrar_mascota():
+                
+                def continuar_2():
+                    #print(mascota)
+                    #print(lista_sintomas)
+                    for widget in content_frame.winfo_children():
+                        widget.destroy()
+
+                try:
+                    lista_sintomas = entry_sintomas.get().split(" ")
+                    nombre_mascota = entry_nombre_mascota.get()
+                    especie = especie_var.get()
+                    sexo = sexo_var.get()
+                    if tamaño_var.get() == "Miniatura":
+                        tamaño = 1
+                    elif tamaño_var.get() == "Pequeño":
+                        tamaño = 2
+                    elif tamaño_var.get() == "Mediano":
+                        tamaño = 3
+                    else:
+                        tamaño = 4
+                    edad_mascota = int(entry_edad_mascota.get())
+                    peso = float(entry_peso.get())
+
+                    if not nombre_cliente or not edad_cliente or not cedula_cliente:
+                        messagebox.showwarning("Error", "Por favor ingrese valores válidos.")
+                        return
+
+                    mascota = Mascota(nombre_mascota, especie, edad_mascota, sexo, EstadoSalud.ENFERMO, tamaño, peso)
+
+                    boton_continuar = tk.Button(content_frame, text="Continuar", command=continuar_2)
+                    boton_continuar.pack(pady=5)
+                    print(mascota)
+            
+
+                except ValueError:
+                    messagebox.showwarning("Error", "Ingrese valores numéricos válidos.")
+
+            boton_registrar_mascota = tk.Button(content_frame, text="Registrar", command=registrar_mascota)
+            boton_registrar_mascota.pack(pady=5)
+
+
+
+        try:
+            nombre_cliente = entry_nombre.get()
+            edad_cliente = entry_edad.get()
+            cedula_cliente = entry_cedula.get()
+
+            if not nombre_cliente or not edad_cliente or not cedula_cliente:
+                messagebox.showwarning("Error", "Por favor ingrese valores válidos.")
+                return
+
+            cliente = Cliente(nombre_cliente, edad_cliente, cedula_cliente)
+
+            boton_continuar = tk.Button(content_frame, text="Continuar", command=continuar)
+            boton_continuar.pack(pady=5)
+            print(cliente)
+            
+
+        except ValueError:
+            messagebox.showwarning("Error", "Ingrese valores numéricos válidos.")
+
+
+    #cliente = registrar()
+
+    
+
+        #print(cliente)
+
+    boton_registrar = tk.Button(content_frame, text="Registrar", command=registrar)
+    boton_registrar.pack(pady=5)
+
+
+#----------------------------------------------------------------------------------------------
 
 #Planeacion Dieta
 #-----------------------------------------------------------------------------------------------
