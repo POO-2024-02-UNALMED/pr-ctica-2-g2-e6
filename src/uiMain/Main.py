@@ -126,7 +126,7 @@ def inicializar_agendador():
 
 def agendar_servicio(agendador, sede, servicio, cliente_data, mascota_data, dia, hora, empleado_nombre):
     cliente = Cliente(*cliente_data)
-    mascota = Mascota.Mascota(*mascota_data)
+    mascota = Mascota(*mascota_data)
     agendador['cliente'] = cliente
     agendador['mascota'] = mascota
 

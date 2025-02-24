@@ -237,7 +237,7 @@ def confirmar_cupo(sede, servicio, empleado, cupos_disponibles, frame_cupo, raza
         if seleccion:
             cupo = cupos_disponibles[seleccion[0]]
             print(f"Cupo seleccionado: {cupo.get_dia()} {cupo.hora_inicio} - {cupo.hora_fin}")
-            ingresar_datos_cliente(sede, servicio, empleado, cupo, frame_confirmar_cupo, raza_var, precio_var)
+            ingresarDatosCliente(sede, servicio, empleado, cupo, frame_confirmar_cupo, raza_var, precio_var)
         else:
             messagebox.showwarning("Selección Incorrecta", "Debe seleccionar un cupo válido.")
 
@@ -248,7 +248,7 @@ def confirmar_cupo(sede, servicio, empleado, cupos_disponibles, frame_cupo, raza
 # INGRESAR DATOS DEL CLIENTE
 # ===========================
 
-def ingresar_datos_cliente(sede, servicio, empleado, cupo, frame_confirmar_cupo, raza_var, precio_var):
+def ingresarDatosCliente(sede, servicio, empleado, cupo, frame_confirmar_cupo, raza_var, precio_var):
     limpiar_frame(content_frame)
 
     global field_frame_cliente
@@ -633,7 +633,7 @@ def emergencia():
                         messagebox.showwarning("Error", "Por favor ingrese valores válidos.")
                         return
 
-                    mascota = Mascota.Mascota(nombre_mascota, especie, edad_mascota, sexo, EstadoSalud.ENFERMO, tamaño, peso)
+                    mascota = Mascota(nombre_mascota, especie, edad_mascota, sexo, EstadoSalud.ENFERMO, tamaño, peso)
 
                     boton_continuar = tk.Button(content_frame, text="Continuar", command=continuar_2)
                     boton_continuar.pack(pady=5)
@@ -735,7 +735,7 @@ def mostrar_formulario_dietas():
                 messagebox.showwarning("Error", "Por favor seleccione valores válidos.")
                 return
             # Crear objeto Mascota
-            mascota = Mascota.Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
+            mascota = Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
 
             # Crear y calcular dieta
             dieta = Dieta.Dieta(mascota)
