@@ -5,6 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")
 from src.gestorAplicacion.elementos.centroAdopcion import CentroAdopcion
 from src.gestorAplicacion.gestion.Cupo import Cupo
 from src.gestorAplicacion.gestion.empleado import Empleado
+from src.gestorAplicacion.elementos import Producto
 
 def crear_datos_iniciales():
     # Crear centros de adopción con datos iniciales
