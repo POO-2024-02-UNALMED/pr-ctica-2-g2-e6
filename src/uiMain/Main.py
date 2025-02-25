@@ -14,7 +14,7 @@ from src.gestorAplicacion.elementos.estado_Salud import EstadoSalud
 from src.gestorAplicacion.gestion.Memorial import Memorial
 from src.gestorAplicacion.elementos.Fallecido import Fallecido
 from tkinter import messagebox
-from src.baseDatos.serializador import cargar_datos_centros, cargar_datos_productos
+from src.baseDatos.serializador import cargar_datos_centros, cargar_datos_productos, cargar_datos_productos2
 
 if __name__ == "__main__":
     from src.uiMain import InitialWin

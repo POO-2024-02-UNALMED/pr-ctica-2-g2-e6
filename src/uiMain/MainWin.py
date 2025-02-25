@@ -3,7 +3,7 @@ from FieldFrame import FieldFrame
 from tkinter import ttk, messagebox
 import json
 # Importaciones corregidas
-from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad, CentroAdopcion, Mascota, Cliente, Dieta, EstadoSalud, Memorial, Fallecido, Producto, Tienda, Empleado, cargar_datos_productos
+from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad, CentroAdopcion, Mascota, Cliente, Dieta, EstadoSalud, Memorial, Fallecido, Producto, Tienda, Empleado, cargar_datos_productos,cargar_datos_productos2
 
 # ===========================
 # FUNCIONES GENERALES
