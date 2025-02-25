@@ -10,12 +10,12 @@ from src.gestorAplicacion.elementos.Producto import Producto
 def crear_datos_iniciales():
    
     productos2  = [
-        Producto(f"Dieta Barf Alta en Proteínas para perros (Gramo)", 45.0, "Dieta", f"Alimento para perro", 1000),
-        Producto(f"Dieta Barf Alta en Grasas para perros (Gramo)", 45.0, "Dieta", f"Alimento para perro", 1000),
-        Producto(f"Dieta Barf Alta en Carbohidratos para perros (Gramo)", 45.0, "Dieta", f"Alimento para perro", 1000),
-        Producto(f"Dieta Barf Alta en Proteínas para gatos (Gramo)", 45.0, "Dieta", f"Alimento para perro", 1000),
-        Producto(f"Dieta Barf Alta en Grasas para gatos (Gramo)", 45.0, "Dieta", f"Alimento para perro", 1000),
-        Producto(f"Dieta Barf Alta en Carbohidratos para gatos (Gramo)", 45.0, "Dieta", f"Alimento para perro", 1000)
+        Producto(f"Dieta Barf Alta en Proteínas para perros (Gramo)", 45.0, "Dieta", 1000, f"Alimento para perro"),
+        Producto(f"Dieta Barf Alta en Grasas para perros (Gramo)", 45.0, "Dieta", 1000, f"Alimento para perro"),
+        Producto(f"Dieta Barf Alta en Carbohidratos para perros (Gramo)", 45.0, "Dieta", 1000, f"Alimento para perro"),
+        Producto(f"Dieta Barf Alta en Proteínas para gatos (Gramo)", 45.0, "Dieta", 1000, f"Alimento para perro"),
+        Producto(f"Dieta Barf Alta en Grasas para gatos (Gramo)", 45.0, "Dieta", 1000, f"Alimento para perro"),
+        Producto(f"Dieta Barf Alta en Carbohidratos para gatos (Gramo)", 45.0, "Dieta", 1000, f"Alimento para perro")
     ]
 
     return productos2
