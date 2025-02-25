@@ -857,6 +857,8 @@ def mostrar_formulario_dietas():
     for widget in content_frame.winfo_children():
         widget.destroy()
 
+    #Formulario para crear el objeto Mascota 
+
     tk.Label(content_frame, text="Planificación de Dieta", font=("Arial", 18, "bold")).pack(pady=10)
 
     tk.Label(content_frame, text="Nombre de la mascota:").pack()
@@ -888,6 +890,7 @@ def mostrar_formulario_dietas():
     especie = especie_var.get()
 
     def calcular_dieta():
+        #Capturar datos del formulario en variables
         try:
             nombre = entry_nombre.get()
             especie = especie_var.get()
@@ -914,12 +917,20 @@ def mostrar_formulario_dietas():
             dieta.planDieta()
             dieta.menu()
             messagebox.showinfo(f"Plan de dieta", f"{dieta}")
+
+            # Preguntar si desea continuar a la tienda
+            continuar = messagebox.askyesno("Continuar", "¿Desea continuar a la tienda de dietas BARF?")
+            if continuar:
+                inicio_tienda_dietas(especie)
+            else:
+                mostrar_interfaz_inicial(content_frame)
+
         except ValueError:
             messagebox.showwarning("Error", "Ingrese valores numéricos válidos.")
 
     tk.Button(content_frame, text="Calcular Dieta", command=calcular_dieta).pack(pady=10)
     
-
+#Mini tienda de productos dieta BARF
     def inicio_tienda_dietas(especie):
         limpiar_frame(content_frame)
 
@@ -928,9 +939,10 @@ def mostrar_formulario_dietas():
 
         if not productosBarf:
             messagebox.showwarning("Error", "No se encontraron productos disponibles.")
+            mostrar_interfaz_inicial(content_frame)
             return
         
-
+    #Formulario para realizar la compra en gramos de distintos Dieta Barf para perros y gatos
         ttk.Label(content_frame, text=f"Tienda de Dietas BARF para {especie}s", font=("Arial", 18)).pack(pady=20)
         ttk.Label(content_frame, text="Seleccione un producto:", font=("Arial", 14)).pack(pady=10)
 
@@ -939,7 +951,8 @@ def mostrar_formulario_dietas():
             content_frame,
             textvariable=producto_var,
             values=[f"{p.nombre} - ${p.precio} por gramo" for p in productosBarf],
-            state="readonly"
+            state="readonly",
+            width=60
         )
         productos_combobox.pack(pady=10)
 
@@ -958,6 +971,7 @@ def mostrar_formulario_dietas():
         cedula_entry = ttk.Entry(content_frame)
         cedula_entry.pack(pady=5)
         
+        #Consumacion de la compra y factura electronica.
         def confirmar_compra():
             producto_seleccionado = producto_var.get()
             cantidad = int(cantidad_var.get())
@@ -973,8 +987,8 @@ def mostrar_formulario_dietas():
 
             if producto:
                 cliente = Cliente(nombre,18, cedula)
-                resultado = "xd"
-                messagebox.showinfo("Compra Exitosa", resultado)
+                messagebox.showinfo("Factura Electrónica", 
+                                    f"FACTURA ELECTRONICA\n{producto.nombre} x {cantidad}g.\nCliente: {cliente.nombre}\nDocumento: {cliente.cedula}\nMuchas Gracias por comprar en UNmascota! Vuelva pronto")
                 mostrar_interfaz_inicial(content_frame)
             else:
                 messagebox.showwarning("Error", "Producto no encontrado.")
@@ -983,41 +997,7 @@ def mostrar_formulario_dietas():
         frame_botones.pack(pady=10)
 
         ttk.Button(frame_botones, text="Confirmar Compra", command=confirmar_compra).pack(side="left", padx=5)
-        ttk.Button(content_frame, text="Cancelar", command=mostrar_formulario_dietas).pack(pady=10)
-    
-    ttk.Button(content_frame, text="Tienda Dieta BARF", command=lambda: inicio_tienda_dietas(especie)).pack(side="left", padx=5)
-
-    # Mini tienda de productos dietéticos
-    #tipoDietaBarf = f"Dieta Barf para {especie}s"
-
-    #tienda = Tienda(Empleado("Albert", 22, 555, 1323, "West Elm", "Vendedor"))
-    #productosBarf = [
-    #    Producto(f"Dieta Barf Alta en Proteínas para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000),
-     #   Producto(f"Dieta Barf Alta en Grasas para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000),
-      #  Producto(f"Dieta Barf Alta en Carbohidratos para {especie} (Gramo)", 45.0, "Dieta", f"Alimento para {especie}", 1000)
-    #]
-
-#    for producto in productosBarf:
- #       tienda.agregarProducto(producto)
-
-  #  # Compra de Dieta Barf
-   # print("\n¿Desea adquirir Dieta Barf para su mascota? [si/no]: ")
-    #while True:    
-     #   respuesta = input().lower()
-      #  if respuesta == "si":
-      #      print(f"\nSabores disponibles de {tipoDietaBarf}:")
-       #     print(tienda.filtrar("Dieta"))
-        #    opcionSabor = int(input("Ingrese el número del sabor que desea: "))
-         #  resultadoCompra = tienda.compra(opcionSabor, cantidadGramos, cliente)
-          #  print(resultadoCompra)
-        #    print("¿Desea seguir comprando? [Si/No]: ")
-        #    return
-       # elif respuesta == "no":
-        #    print("\nGracias por ingresar a la interfaz de planificación de dieta!\nRedirigiéndote al menú principal...\n")
-         #   break
-        #else:
-        #    print("ingresa un valor valido (si/no)")
-         #   return
+        ttk.Button(frame_botones, text="Cancelar", command=mostrar_formulario_dietas).pack(side="right", padx=5)
 
 #-----------------------------------------------------------------------------------------------
 def mostrar_formulario_registro():
@@ -1154,9 +1134,10 @@ archivo_menu.add_command(label="Aplicación", command=mostrar_info_aplicacion)
 archivo_menu.add_separator()
 menu_bar = tk.Menu(root)
 archivo_menu = tk.Menu(menu_bar, tearoff=0)
-archivo_menu.add_command(label="Salir", command=lambda: return_to_initial(root, main_window))
+archivo_menu.add_command(label="Salir", command=salir_aplicacion)
 menu_bar.add_cascade(label="Archivo", menu=archivo_menu)
 root.config(menu=menu_bar)
+
 
 procesos_menu = tk.Menu(menu_bar, tearoff=0)
 procesos_menu.add_command(label="Tienda UNamascota", command=lambda: manejar_seleccion_proceso("Proceso 1"))
