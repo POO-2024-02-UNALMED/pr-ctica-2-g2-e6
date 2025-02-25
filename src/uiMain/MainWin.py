@@ -923,7 +923,13 @@ def mostrar_formulario_dietas():
     def inicio_tienda_dietas(especie):
         limpiar_frame(content_frame)
 
-        productosBarf = [p for p in Tienda.get_productos() if p.get_tipo_animal() == "Dieta"]
+        # Cargar productos desde el archivo serializado
+        productosBarf = cargar_datos_productos2()
+
+        if not productosBarf:
+            messagebox.showwarning("Error", "No se encontraron productos disponibles.")
+            return
+        
 
         ttk.Label(content_frame, text=f"Tienda de Dietas BARF para {especie}s", font=("Arial", 18)).pack(pady=20)
         ttk.Label(content_frame, text="Seleccione un producto:", font=("Arial", 14)).pack(pady=10)
