@@ -973,7 +973,7 @@ def mostrar_formulario_dietas():
 
             if producto:
                 cliente = Cliente(nombre,18, cedula)
-                resultado = "sexosexosexosexosexosexosexo"
+                resultado = "xd"
                 messagebox.showinfo("Compra Exitosa", resultado)
                 mostrar_interfaz_inicial(content_frame)
             else:
