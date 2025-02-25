@@ -90,7 +90,7 @@ class CentroAdopcion:
             if centro.gestionarVeterinario() == None:
                 return False
             
-            if self.hayCapacidad() == False:
+            if self.hay_capacidad() == False:
                 return False
             
             for hospitalizado in self._animalesHospitalizados:
