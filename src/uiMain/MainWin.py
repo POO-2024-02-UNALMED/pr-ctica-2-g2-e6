@@ -10,10 +10,10 @@ from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disp
 # ===========================
 
 def mostrar_info_aplicacion():
-    messagebox.showinfo("Aplicación", "Esta aplicación realiza varias operaciones y consultas.")
+    messagebox.showinfo("Aplicación", "Está es la aplicación de UNmascota, un sistema de servicios de peluqueria, tienda, entrenamiento, peluqueria, gestion de osarios y nutricionista.")
 
 def mostrar_info_autores():
-    messagebox.showinfo("Acerca de", "Autores: Mel Bulaf")
+    messagebox.showinfo("Acerca de", "Autores: Alejandro López González, Emmanuel Betancur Uribe, Santiago Martínez Ríos, Melanie Bula Fuente,  Tomas Ospina Gaviria")
 
 def salir_aplicacion():
     root.quit()
@@ -1116,16 +1116,13 @@ style.configure("TCombobox", padding=5)
 main_frame = ttk.Frame(root, padding=10)
 main_frame.pack(fill=tk.BOTH, expand=True)
 
-menu_bar = tk.Menu(main_frame)
-
-archivo_menu = tk.Menu(menu_bar, tearoff=0)
-archivo_menu.add_command(label="Aplicación", command=mostrar_info_aplicacion)
-archivo_menu.add_separator()
 menu_bar = tk.Menu(root)
+root.config(menu=menu_bar)
 archivo_menu = tk.Menu(menu_bar, tearoff=0)
+archivo_menu.add_command(label="Aplicacion", command=mostrar_info_aplicacion)
+archivo_menu.add_separator()
 archivo_menu.add_command(label="Salir", command=salir_aplicacion)
 menu_bar.add_cascade(label="Archivo", menu=archivo_menu)
-root.config(menu=menu_bar)
 
 
 procesos_menu = tk.Menu(menu_bar, tearoff=0)
