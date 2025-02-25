@@ -84,7 +84,7 @@ def obtener_empleados_disponibles(agendador, sede):
 ##================================================================================================
 ##UNAEMERGENCIA
 ##================================================================================================
-def emergenciaVeterinaria():
+'''def emergenciaVeterinaria():
 
     cliente = Cliente.registro()
 
@@ -175,5 +175,5 @@ def emergenciaVeterinaria():
             print("Saliendo de Emergencia Veterinaria")
         elif alta == 2:
             print("\nSu mascota " + mascota.getNombre() + " sigue hospitalizada.")
-            print("Saliendo de Emergencia Veterinaria")
+            print("Saliendo de Emergencia Veterinaria")'''
 
