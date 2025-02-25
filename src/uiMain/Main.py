@@ -58,7 +58,7 @@ def agendar_servicio(agendador, sede, servicio, cliente_data, mascota_data, dia,
 
     # Asignar el cupo al cliente y mascota
     cupo_seleccionado.disponible = False
-    return "Cita agendada exitosamente"
+    return "Cita agendada exitosamente" 
 
 def verificar_disponibilidad(agendador, sede, servicio):
     centro = agendador['centros_adopcion'][sede]

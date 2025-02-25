@@ -1,0 +1,17 @@
+Nombre de la mascota: mm
+Peso Actual: 2123.0 kg
+Edad: 12 años
+Tamaño: Mediano
+Peso ideal: 1063.81 kg
+Cantidad de Gramos de alimento diarios: 31914.23 g
+Debe bajar de peso.
+
+Distribución en porcentajes de nutrientes:
+ Proteínas: 50.0%
+ Grasas: 15.0%
+ Carbohidratos: 35.0%
+
+Distribución en gramos de nutrientes:
+ Proteínas: 15957.12 g
+ Grasas: 4787.13 g
+ Carbohidratos: 11169.98 g

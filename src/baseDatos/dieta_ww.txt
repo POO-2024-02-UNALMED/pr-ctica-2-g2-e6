@@ -1,0 +1,17 @@
+Nombre de la mascota: ww
+Peso Actual: 122.0 kg
+Edad: 12 años
+Tamaño: Mediano
+Peso ideal: 63.31 kg
+Cantidad de Gramos de alimento diarios: 1899.23 g
+Debe bajar de peso.
+
+Distribución en porcentajes de nutrientes:
+ Proteínas: 50.0%
+ Grasas: 15.0%
+ Carbohidratos: 35.0%
+
+Distribución en gramos de nutrientes:
+ Proteínas: 949.62 g
+ Grasas: 284.88 g
+ Carbohidratos: 664.73 g

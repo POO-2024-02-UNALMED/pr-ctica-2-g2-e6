@@ -1,0 +1,17 @@
+Nombre de la mascota: mmm
+Peso Actual: 123.0 kg
+Edad: 213 años
+Tamaño: Grande
+Peso ideal: 61.69 kg
+Cantidad de Gramos de alimento diarios: 2467.48 g
+Debe bajar de peso.
+
+Distribución en porcentajes de nutrientes:
+ Proteínas: 50.0%
+ Grasas: 15.0%
+ Carbohidratos: 35.0%
+
+Distribución en gramos de nutrientes:
+ Proteínas: 1233.74 g
+ Grasas: 370.12 g
+ Carbohidratos: 863.62 g
