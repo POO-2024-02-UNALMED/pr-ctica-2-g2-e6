@@ -309,7 +309,7 @@ def confirmar_agendamiento(sede, servicio, empleado, cupo, cliente_data, mascota
     resultado = agendar_servicio(agendador, sede, servicio, cliente_data, mascota_data, cupo.get_dia().weekday(), cupo.hora_inicio, empleado.nombre)
     print(f"Resultado del agendamiento: {resultado}")
     messagebox.showinfo("Resultado", resultado)
-    mostrar_interfaz_inicial()
+    mostrar_interfaz_inicial(content_frame)
 
 # ===========================
 # CLASE TIENDAAPP (PROCESO 1)
