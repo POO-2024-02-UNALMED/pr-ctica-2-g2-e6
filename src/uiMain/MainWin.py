@@ -472,9 +472,16 @@ def ingresar_datos_cliente(producto, cantidad):
         Nombre: {nombre}
         Cédula: {cedula}
         """
-        messagebox.showinfo("Compra Exitosa", recibo)
-        mostrar_interfaz_inicial(content_frame)
 
+        # Limpiar el frame y mostrar el recibo en el mismo frame
+        limpiar_frame(content_frame)
+        ttk.Label(content_frame, text="Recibo de Compra", font=("Arial", 18)).pack(pady=20)
+        ttk.Label(content_frame, text=recibo, font=("Arial", 12)).pack(pady=10)
+
+        # Botón para volver al inicio
+        ttk.Button(content_frame, text="Volver al Inicio", command=inicio_tienda).pack(pady=10)
+    
+    # Botón para finalizar la compra
     ttk.Button(content_frame, text="Finalizar Compra", command=finalizar_compra).pack(pady=10)
     ttk.Button(content_frame, text="Cancelar", command=inicio_tienda).pack(pady=10)
 
