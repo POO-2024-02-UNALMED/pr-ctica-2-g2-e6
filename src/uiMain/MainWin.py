@@ -898,7 +898,7 @@ def mostrar_formulario_dietas():
                 messagebox.showwarning("Error", "Por favor seleccione valores válidos.")
                 return
             # Crear objeto Mascota
-            mascota = Mascota(nombre, especie, edad, sexo, "SANO", tamano, peso)
+            mascota = Mascota(nombre, especie, edad, sexo, EstadoSalud.SANO , tamano, peso)
 
             # Crear y calcular dieta
             dieta = Dieta(mascota)
