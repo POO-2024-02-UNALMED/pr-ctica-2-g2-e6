@@ -3,7 +3,7 @@ from FieldFrame import FieldFrame
 from tkinter import ttk, messagebox
 import json
 # Importaciones corregidas
-from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad, CentroAdopcion, Mascota, Cliente, Dieta, EstadoSalud, Memorial, Fallecido, Producto, cargar_datos_productos
+from Main import inicializar_agendador, agendar_servicio, obtener_empleados_disponibles, obtener_sedes, obtener_servicios, verificar_disponibilidad, CentroAdopcion, Mascota, Cliente, Dieta, EstadoSalud, Memorial, Fallecido, Producto, Tienda, Empleado, cargar_datos_productos
 
 # ===========================
 # FUNCIONES GENERALES
@@ -885,6 +885,7 @@ def mostrar_formulario_dietas():
     tk.Label(content_frame, text="Peso en kg:").pack()
     entry_peso = tk.Entry(content_frame)
     entry_peso.pack()
+    especie = especie_var.get()
 
     def calcular_dieta():
         try:
@@ -917,6 +918,68 @@ def mostrar_formulario_dietas():
             messagebox.showwarning("Error", "Ingrese valores numéricos válidos.")
 
     tk.Button(content_frame, text="Calcular Dieta", command=calcular_dieta).pack(pady=10)
+    
+
+    def inicio_tienda_dietas(especie):
+        limpiar_frame(content_frame)
+
+        productosBarf = [p for p in Tienda.get_productos() if p.get_tipo_animal() == "Dieta"]
+
+        ttk.Label(content_frame, text=f"Tienda de Dietas BARF para {especie}s", font=("Arial", 18)).pack(pady=20)
+        ttk.Label(content_frame, text="Seleccione un producto:", font=("Arial", 14)).pack(pady=10)
+
+        producto_var = tk.StringVar()
+        productos_combobox = ttk.Combobox(
+            content_frame,
+            textvariable=producto_var,
+            values=[f"{p.nombre} - ${p.precio} por gramo" for p in productosBarf],
+            state="readonly"
+        )
+        productos_combobox.pack(pady=10)
+
+        ttk.Label(content_frame, text="Cantidad en gramos:", font=("Arial", 14)).pack(pady=10)
+        cantidad_var = tk.IntVar()
+        cantidad_entry = ttk.Entry(content_frame, textvariable=cantidad_var)
+        cantidad_entry.pack(pady=10)
+
+        ttk.Label(content_frame, text="Ingrese sus datos:", font=("Arial", 14)).pack(pady=10)
+    
+        ttk.Label(content_frame, text="Nombre:", font=("Arial", 12)).pack(pady=5)
+        nombre_entry = ttk.Entry(content_frame)
+        nombre_entry.pack(pady=5)
+        
+        ttk.Label(content_frame, text="Cédula:", font=("Arial", 12)).pack(pady=5)
+        cedula_entry = ttk.Entry(content_frame)
+        cedula_entry.pack(pady=5)
+        
+        def confirmar_compra():
+            producto_seleccionado = producto_var.get()
+            cantidad = int(cantidad_var.get())
+            nombre = nombre_entry.get()
+            cedula = cedula_entry.get()
+
+            if not producto_seleccionado or cantidad <= 0 or not nombre or not cedula:
+                messagebox.showwarning("Error", "Por favor complete todos los campos correctamente.")
+                return
+
+            nombre_producto = producto_seleccionado.split(" - ")[0]
+            producto = next((p for p in productosBarf if p.nombre == nombre_producto), None)
+
+            if producto:
+                cliente = Cliente(nombre,18, cedula)
+                resultado = "sexosexosexosexosexosexosexo"
+                messagebox.showinfo("Compra Exitosa", resultado)
+                mostrar_interfaz_inicial(content_frame)
+            else:
+                messagebox.showwarning("Error", "Producto no encontrado.")
+
+        frame_botones = ttk.Frame(content_frame)
+        frame_botones.pack(pady=10)
+
+        ttk.Button(frame_botones, text="Confirmar Compra", command=confirmar_compra).pack(side="left", padx=5)
+        ttk.Button(content_frame, text="Cancelar", command=mostrar_formulario_dietas).pack(pady=10)
+    
+    ttk.Button(content_frame, text="Tienda Dieta BARF", command=lambda: inicio_tienda_dietas(especie)).pack(side="left", padx=5)
 
     # Mini tienda de productos dietéticos
     #tipoDietaBarf = f"Dieta Barf para {especie}s"

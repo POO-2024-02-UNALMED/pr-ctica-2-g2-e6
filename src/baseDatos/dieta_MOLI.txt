@@ -1,0 +1,17 @@
+Nombre de la mascota: moli
+Peso Actual: 12.0 kg
+Edad: 12 años
+Tamaño: Mediano
+Peso ideal: 8.31 kg
+Cantidad de Gramos de alimento diarios: 249.23 g
+Debe bajar de peso.
+
+Distribución en porcentajes de nutrientes:
+ Proteínas: 50.0%
+ Grasas: 15.0%
+ Carbohidratos: 35.0%
+
+Distribución en gramos de nutrientes:
+ Proteínas: 124.62 g
+ Grasas: 37.38 g
+ Carbohidratos: 87.23 g
