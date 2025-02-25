@@ -487,203 +487,215 @@ def ingresar_datos_cliente(producto, cantidad):
 
 #Emergencia Veterinaria
 #--------------------------------------------------------------------------
+
+def efectivo(cliente, mascota):
+    messagebox.showinfo("Factura", f"*|* Cliente     *|* {cliente} \n\n*|* Animal      *|* {mascota} \n\n*|* Monto total *|* 32000$")
+    limpiar_frame(content_frame)
+    ttk.Label(content_frame, text="Pago efectuado", font=("Arial", 14)).pack(anchor="center")
+
+def tarjeta(cliente, mascota):
+    messagebox.showinfo("Factura", f"*|* Cliente     *|* {cliente} \n\n*|* Animal      *|* {mascota} \n\n*|* Monto total *|* 30000$")
+    limpiar_frame(content_frame)
+    ttk.Label(content_frame, text="Pago efectuado", font=("Arial", 14)).pack(anchor="center")
+
+def puntos(cliente, mascota):
+    messagebox.showinfo("Factura", f"*|* Cliente     *|* {cliente} \n\n*|* Animal      *|* {mascota} \n\n*|* Monto total *|* 28000$")
+    limpiar_frame(content_frame)
+    ttk.Label(content_frame, text="Pago efectuado", font=("Arial", 14)).pack(anchor="center")
+
+
+def pagar(cliente, mascota):
+    limpiar_frame(content_frame)
+    ttk.Button(content_frame, text="Pago con efectivo", command=lambda: efectivo(cliente, mascota)).pack(pady=5)
+    ttk.Button(content_frame, text="Pago con tarjeta", command=lambda: tarjeta(cliente, mascota)).pack(pady=5)
+    ttk.Button(content_frame, text="Descuento de puntos", command=lambda: puntos(cliente, mascota)).pack(pady=5)
+
+def continuar_proceso(cliente, centro, mascota, sintomas):
+    limpiar_frame(content_frame)
+    sintomas_m = sintomas.split(" ") 
+    lista_sintomas = []
+    for sintoma in sintomas_m:
+        if sintoma != "y":
+            lista_sintomas.append(sintoma)
+    ttk.Label(content_frame, text=f"Su mascota {mascota.getNombre()} con síntomas {lista_sintomas} \nha sido hospitalizada en {centro.getNombre()}", font=("Arial", 14)).pack(pady=5)
+    ttk.Button(content_frame, text="Continuar al pago", command=lambda: pagar(cliente, mascota)).pack(pady=5)
+
+def registrar_mascota(cliente, centro, nombre, especie, edad, sexo, tamaño, peso, sintomas):
+    
+    if not nombre or not especie or not edad or not sexo or not tamaño or not peso or not sintomas:
+            messagebox.showerror("Error", "Todos los campos deben ser completados")
+    else:
+        if tamaño == "Miniatura":
+            tamaño_mascota = 1
+        elif tamaño == "Pequeño":
+            tamaño_mascota = 2
+        elif tamaño == "Mediano":
+            tamaño_mascota = 3
+        else:
+            tamaño_mascota = 4
+
+        mascota = Mascota(nombre, especie, int(edad), sexo, EstadoSalud.ENFERMO, tamaño_mascota, float(peso))
+    
+        #print(mascota)
+        #print(sintomas)
+
+        boton_continuar = ttk.Button(content_frame, text="Continuar", command=lambda: continuar_proceso(cliente, centro, mascota, sintomas))
+        boton_continuar.pack(pady=2)
+
+
+def registro_mascota(cliente, centro):
+    limpiar_frame(content_frame)
+
+    etiqueta_info_2 = ttk.Label(content_frame, text="Ingrese los datos de su mascota:", font=("Arial", 14))
+    #etiqueta_info_2 = ttk.Label(content_frame, text="Ingrese los datos de su mascota:", font=("Arial", 14), background="white")
+    etiqueta_info_2.pack(pady=2)
+
+    etiqueta_nombre_mascota = ttk.Label(content_frame, text="Nombre:", font=("Arial", 14))
+    #etiqueta_nombre_mascota = ttk.Label(content_frame, text="Nombre:", font=("Arial", 14), background="white")
+    etiqueta_nombre_mascota.pack()
+    entry_nombre_mascota = ttk.Entry(content_frame)
+    entry_nombre_mascota.pack(pady=2)
+
+    etiqueta_especie = ttk.Label(content_frame, text="Especie", font=("Arial", 14))
+    #etiqueta_especie = ttk.Label(content_frame, text="Especie", font=("Arial", 14), background="white")
+    etiqueta_especie.pack(pady=2)
+    especie_var = tk.StringVar()
+    opciones_especie = ["Perro", "Gato"]
+    menu_especie = tk.OptionMenu(content_frame, especie_var, *opciones_especie)
+    menu_especie.pack(pady=2)
+
+    etiqueta_edad_mascota = ttk.Label(content_frame, text="Edad (Años):", font=("Arial", 14))
+    #etiqueta_edad_mascota = ttk.Label(content_frame, text="Edad (Años):", font=("Arial", 14), background="white")
+    etiqueta_edad_mascota.pack()
+    entry_edad_mascota = ttk.Entry(content_frame)
+    entry_edad_mascota.pack(pady=2)
+
+    etiqueta_sexo = ttk.Label(content_frame, text="Sexo", font=("Arial", 14))
+    #etiqueta_sexo = ttk.Label(content_frame, text="Sexo", font=("Arial", 14), background="white")
+    etiqueta_sexo.pack(pady=2)
+    sexo_var = tk.StringVar()
+    opciones_sexo = ["Macho", "Hembra"]
+    menu_sexo = tk.OptionMenu(content_frame, sexo_var, *opciones_sexo)
+    menu_sexo.pack(pady=2)
+
+    etiqueta_tamaño = ttk.Label(content_frame, text="Tamaño", font=("Arial", 14))
+    #etiqueta_tamaño = ttk.Label(content_frame, text="Tamaño", font=("Arial", 14), background="white")
+    etiqueta_tamaño.pack(pady=2)
+    tamaño_var = tk.StringVar()
+    opciones_tamaño = ["Miniatura", "Pequeño", "Mediano", "Grande"]
+    menu_tamaño = tk.OptionMenu(content_frame, tamaño_var, *opciones_tamaño)
+    menu_tamaño.pack(pady=2)
+
+    etiqueta_peso = ttk.Label(content_frame, text="Peso en kg:", font=("Arial", 14))
+    #etiqueta_peso = ttk.Label(content_frame, text="Peso en kg:", font=("Arial", 14), background="white")
+    etiqueta_peso.pack()
+    entry_peso = ttk.Entry(content_frame)
+    entry_peso.pack(pady=2)
+
+    etiqueta_sintomas = ttk.Label(content_frame, text="Síntomas:", font=("Arial", 14))
+    #etiqueta_sintomas = ttk.Label(content_frame, text="Síntomas:", font=("Arial", 14), background="white")
+    etiqueta_sintomas.pack()
+    entry_sintomas = tk.Entry(content_frame)
+    entry_sintomas.pack(pady=2)
+
+    #lista_sintomas = entry_sintomas.get().split(" ")
+    #print(lista_sintomas)
+
+    boton_registrar_mascota = ttk.Button(content_frame, text="Registrar", command=lambda: registrar_mascota(cliente, centro, entry_nombre_mascota.get(), especie_var.get(), entry_edad_mascota.get(), sexo_var.get(), tamaño_var.get(), entry_peso.get(), entry_sintomas.get()))
+    boton_registrar_mascota.pack(pady=5)
+
+
+
+def seleccion_sede(cliente, sede):
+    if not sede:
+            messagebox.showerror("Error", "Elija una sede")
+    else:
+        centro1 = CentroAdopcion(sede)
+        print(centro1.getNombre())
+
+        if sede != "":
+            boton_2 = ttk.Button(content_frame, text="Continuar", command=lambda: registro_mascota(cliente, centro1))
+            boton_2.pack(pady=10)
+
+
+def mostrar_formulario_sedes_emer(cliente):
+    limpiar_frame(content_frame)
+
+    sede_var = tk.StringVar()
+
+    frame_sede = ttk.Frame(content_frame)
+    frame_sede.pack(pady=10)
+    ttk.Label(frame_sede, text="Seleccione una sede:", font=("Arial", 18)).pack(pady=10)
+    
+    #opciones_sedes = obtener_sedes()
+    #print(f"Opciones de sedes: {opciones_sedes}")
+    #menu_sedes = ttk.Combobox(frame_sede, textvariable=sede_var, values=opciones_sedes, state="readonly")
+    #menu_sedes.pack(pady=10)
+
+    #tamaño_var = tk.StringVar()
+    opciones_sedes = obtener_sedes()
+    menu_sedes = tk.OptionMenu(content_frame, sede_var, *opciones_sedes)
+    menu_sedes.pack(pady=5)
+
+
+    #sede = sede_var.get()
+    
+    ttk.Button(frame_sede, text="Seleccionar Sede", command=lambda: seleccion_sede(cliente,sede_var.get())).pack(pady=10)
+
+def registrar(nombre, edad, cedula):
+    if not nombre or not edad or not cedula:
+            messagebox.showerror("Error", "Todos los campos deben ser completados.")
+    else:
+        cliente1 = Cliente(nombre, edad, cedula)
+        #cliente = cliente1
+        print(cliente1)
+
+        boton_registro_cliente = ttk.Button(content_frame, text="Continuar", command=lambda: mostrar_formulario_sedes_emer(cliente1))
+        boton_registro_cliente.pack(pady=10)
+
+
+def registro_cliente():
+
+        limpiar_frame(content_frame)
+
+        etiqueta_info = ttk.Label(content_frame, text="Ingrese sus datos", font=("Arial", 14))
+        
+
+        #etiqueta_info = ttk.Label(content_frame, text="Ingrese sus datos", font=("Arial", 14), background="white")
+        etiqueta_info.pack(pady=5)
+
+        etiqueta_nombre = ttk.Label(content_frame, text="Nombre:", font=("Arial", 14))
+        #etiqueta_nombre = ttk.Label(content_frame, text="Nombre:", font=("Arial", 14), background="white")
+        etiqueta_nombre.pack(pady=5)
+        entry_nombre = ttk.Entry(content_frame)
+        entry_nombre.pack(pady=5)
+
+        etiqueta_edad = ttk.Label(content_frame, text="Edad:", font=("Arial", 14))
+        #etiqueta_edad = ttk.Label(content_frame, text="Edad:", font=("Arial", 14), background="white")
+        etiqueta_edad.pack(pady=5)
+        entry_edad = ttk.Entry(content_frame)
+        entry_edad.pack(pady=5)
+
+        etiqueta_cedula = ttk.Label(content_frame, text="Cédula:", font=("Arial", 14))
+        #etiqueta_cedula = ttk.Label(content_frame, text="Cédula:", font=("Arial", 14), background="white")
+        etiqueta_cedula.pack(pady=5)
+        entry_cedula = ttk.Entry(content_frame)
+        entry_cedula.pack(pady=5)
+
+        
+        boton_registrar = ttk.Button(content_frame, text="Registrar", command=lambda: registrar(entry_nombre.get(), entry_edad.get(), entry_cedula.get()))
+        boton_registrar.pack(pady=5)
+
+
 def emergencia():
 
-    cemtro = CentroAdopcion("POO")
+    limpiar_frame(content_frame)
 
-    for widget in content_frame.winfo_children():
-        widget.destroy()
-
-    etiqueta_info = tk.Label(content_frame, text="Ingrese sus datos", font=("Arial", 14))
-    bienvenida = tk.Label(content_frame, text="Bienvenido a Emergencia Veterinaria", font=("Arial", 14), background="white")
+    bienvenida = ttk.Label(content_frame, text="Bienvenido a Emergencia Veterinaria", font=("Arial", 14))
     bienvenida.pack(pady=5)
 
-    etiqueta_info = tk.Label(content_frame, text="Ingrese sus datos", font=("Arial", 14), background="white")
-    etiqueta_info.pack(pady=5)
-
-    etiqueta_nombre = tk.Label(content_frame, text="Nombre:", font=("Arial", 14))
-    etiqueta_nombre = tk.Label(content_frame, text="Nombre:", font=("Arial", 14), background="white")
-    etiqueta_nombre.pack(pady=5)
-    entry_nombre = tk.Entry(content_frame)
-    entry_nombre.pack(pady=5)
-
-    etiqueta_edad = tk.Label(content_frame, text="Edad:", font=("Arial", 14))
-    etiqueta_edad = tk.Label(content_frame, text="Edad:", font=("Arial", 14), background="white")
-    etiqueta_edad.pack(pady=5)
-    entry_edad = tk.Entry(content_frame)
-    entry_edad.pack(pady=5)
-
-    etiqueta_cedula = tk.Label(content_frame, text="Cédula:", font=("Arial", 14))
-    etiqueta_cedula = tk.Label(content_frame, text="Cédula:", font=("Arial", 14), background="white")
-    etiqueta_cedula.pack(pady=5)
-    entry_cedula = tk.Entry(content_frame)
-    entry_cedula.pack(pady=5)
-
-    def registrar():
-
-        def continuar():
-            #print(cliente)
-            for widget in content_frame.winfo_children():
-                widget.destroy()
-
-            etiqueta_info_2 = tk.Label(content_frame, text="Ingrese los datos de su mascota:", font=("Arial", 14))
-            etiqueta_info_2 = tk.Label(content_frame, text="Ingrese los datos de su mascota:", font=("Arial", 14), background="white")
-            etiqueta_info_2.pack(pady=5)
-
-            etiqueta_nombre_mascota = tk.Label(content_frame, text="Nombre:", font=("Arial", 14))
-            etiqueta_nombre_mascota = tk.Label(content_frame, text="Nombre:", font=("Arial", 14), background="white")
-            etiqueta_nombre_mascota.pack()
-            entry_nombre_mascota = tk.Entry(content_frame)
-            entry_nombre_mascota.pack(pady=5)
-
-            etiqueta_especie = tk.Label(content_frame, text="Especie", font=("Arial", 14))
-            etiqueta_especie = tk.Label(content_frame, text="Especie", font=("Arial", 14), background="white")
-            etiqueta_especie.pack(pady=5)
-            especie_var = tk.StringVar()
-            opciones_especie = ["Perro", "Gato"]
-            menu_especie = tk.OptionMenu(content_frame, especie_var, *opciones_especie)
-            menu_especie.pack(pady=5)
-
-            etiqueta_edad_mascota = tk.Label(content_frame, text="Edad (Años):", font=("Arial", 14))
-            etiqueta_edad_mascota = tk.Label(content_frame, text="Edad (Años):", font=("Arial", 14), background="white")
-            etiqueta_edad_mascota.pack()
-            entry_edad_mascota = tk.Entry(content_frame)
-            entry_edad_mascota.pack(pady=5)
-
-            etiqueta_sexo = tk.Label(content_frame, text="Sexo", font=("Arial", 14))
-            etiqueta_sexo = tk.Label(content_frame, text="Sexo", font=("Arial", 14), background="white")
-            etiqueta_sexo.pack(pady=5)
-            sexo_var = tk.StringVar()
-            opciones_sexo = ["Macho", "Hembra"]
-            menu_sexo = tk.OptionMenu(content_frame, sexo_var, *opciones_sexo)
-            menu_sexo.pack(pady=5)
-
-            etiqueta_tamaño = tk.Label(content_frame, text="Tamaño", font=("Arial", 14))
-            etiqueta_tamaño = tk.Label(content_frame, text="Tamaño", font=("Arial", 14), background="white")
-            etiqueta_tamaño.pack(pady=5)
-            tamaño_var = tk.StringVar()
-            opciones_tamaño = ["Miniatura", "Pequeño", "Mediano", "Grande"]
-            menu_tamaño = tk.OptionMenu(content_frame, tamaño_var, *opciones_tamaño)
-            menu_tamaño.pack(pady=5)
-
-            etiqueta_peso = tk.Label(content_frame, text="Peso en kg:", font=("Arial", 14))
-            etiqueta_peso = tk.Label(content_frame, text="Peso en kg:", font=("Arial", 14), background="white")
-            etiqueta_peso.pack()
-            entry_peso = tk.Entry(content_frame)
-            entry_peso.pack(pady=5)
-
-            etiqueta_sintomas = tk.Label(content_frame, text="Síntomas:", font=("Arial", 14))
-            etiqueta_sintomas = tk.Label(content_frame, text="Síntomas:", font=("Arial", 14), background="white")
-            etiqueta_sintomas.pack()
-            entry_sintomas = tk.Entry(content_frame)
-            entry_sintomas.pack(pady=5)
-
-            def registrar_mascota():
-
-                def continuar_2():
-                    #print(mascota)
-                    #print(lista_sintomas)
-                    for widget in content_frame.winfo_children():
-                        widget.destroy()
-
-                    centro = CentroAdopcion("Poo")
-                    #centro.agregarVeterinario(Empleado("Juana", 27, 10975685, 1765476, "allá", "VETERINARIO"))
-                    
-                    etiqueta_sedes = tk.Label(content_frame, text="¿En dónde desea que su masconta sea atendida?", font=("Arial", 14), background="white")
-                    etiqueta_sedes.pack(pady=5)
-                    sedes_var = tk.StringVar()
-                    sedes = centro.mostrarSedes()
-                    menu_sedes = tk.OptionMenu(content_frame, sedes_var, *sedes)
-                    menu_sedes.pack(pady=5)
-
-                    
-
-                    def continuar_3():
-                        #nombre_sede = sedes_var.get()
-                        #print(nombre_sede)
-                        for widget in content_frame.winfo_children():
-                            widget.destroy()
-
-                        centro.setSede(sedes_var.get())
-                        #print(centro.getSede())
-
-                        '''if centro.verificarHospitalizacion(mascota, lista_sintomas, centro):
-                            etiqueta_hosp = tk.Label(content_frame, "Su mascota puede ser hospitalizada.", font=("Arial", 14), background="white")
-                            etiqueta_hosp.pack(pady=5)
-                        else:
-                            etiqueta_hosp = tk.Label(content_frame, text="No", font=("Arial", 14), background="white")
-                            etiqueta_hosp.pack(pady=5)'''
-
-                        
-
-                    boton_continuar_2 = tk.Button(content_frame, text="Continuar", command=continuar_3)
-                    boton_continuar_2.pack(pady=5)
-
-
-                try:
-                    lista_sintomas = entry_sintomas.get().split(" ")
-                    nombre_mascota = entry_nombre_mascota.get()
-                    especie = especie_var.get()
-                    sexo = sexo_var.get()
-                    if tamaño_var.get() == "Miniatura":
-                        tamaño = 1
-                    elif tamaño_var.get() == "Pequeño":
-                        tamaño = 2
-                    elif tamaño_var.get() == "Mediano":
-                        tamaño = 3
-                    else:
-                        tamaño = 4
-                    edad_mascota = int(entry_edad_mascota.get())
-                    peso = float(entry_peso.get())
-
-                    if not nombre_mascota or not especie or not sexo or not tamaño or not edad_mascota or not peso or not lista_sintomas:
-                        messagebox.showwarning("Error", "Por favor ingrese valores válidos.")
-                        return
-
-                    mascota = Mascota(nombre_mascota, especie, edad_mascota, sexo, EstadoSalud.ENFERMO, tamaño, peso)
-
-                    boton_continuar = tk.Button(content_frame, text="Continuar", command=continuar_2)
-                    boton_continuar.pack(pady=5)
-                    print(mascota)
-
-
-                except ValueError:
-                    messagebox.showwarning("Error", "Ingrese valores numéricos válidos.")
-
-            boton_registrar_mascota = tk.Button(content_frame, text="Registrar", command=registrar_mascota)
-            boton_registrar_mascota.pack(pady=5)
-
-
-
-        try:
-            nombre_cliente = entry_nombre.get()
-            edad_cliente = entry_edad.get()
-            cedula_cliente = entry_cedula.get()
-
-            if not nombre_cliente or not edad_cliente or not cedula_cliente:
-                messagebox.showwarning("Error", "Por favor ingrese valores válidos.")
-                return
-
-            cliente = Cliente(nombre_cliente, edad_cliente, cedula_cliente)
-
-            boton_continuar = tk.Button(content_frame, text="Continuar", command=continuar)
-            boton_continuar.pack(pady=5)
-            print(cliente)
-
-
-        except ValueError:
-            messagebox.showwarning("Error", "Ingrese valores numéricos válidos.")
-
-
-    #cliente = registrar()
-
-
-
-        #print(cliente)
-
-    boton_registrar = tk.Button(content_frame, text="Registrar", command=registrar)
-    boton_registrar.pack(pady=5)
-
+    boton = ttk.Button(content_frame, text="Continuar", command=registro_cliente)
+    boton.pack(pady=30)
 
 #----------------------------------------------------------------------------------------------
 memorial = Memorial(CentroAdopcion("Centro de Ejemplo"))
